@@ -13,3 +13,6 @@ Study Buddy is a dynamic and immersive learning companion that empowers students
   * Feature 4 - An optional <em><strong>Non Disturbing Mode</strong></em> that disables all user notifications;
 * Feature 5 - The app will have a <em><strong>Buddy Mode</strong></em> that will show the user their buddy and provide them with the following features:
   * Feature 6 - <em><strong>XP Counter</strong></em> that will display the user XP earned depending on its study time;
+  * Feature 7 - <em><strong>Ingame Currency</strong></em> that can be earned by leveling up, providing players with a sense of progression and accomplishment as they play;
+  * Feature 8 - The <em><strong>Shop</strong></em> allows players to purchase items that can be used to decorate their buddy's space;
+  * Feature 9 - To incentivize consistent studying habits, achieving study goals for a consecutive number of days will result in a <em><strong>Streak</strong></em>, rewarding players with increased amounts of XP and ingame currency to help them level up and progress even faster;
