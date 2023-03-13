@@ -1,6 +1,7 @@
 # Architecture and Design
 
 ## Logical architecture
+Everything related to logic, displaying and functioning of the app will be solely dependent on the integrated system and it's database. We utilize Apple's and Google's services purely to enable the user to use the app with the respective service's account, if they so wish to do so.
 
 <p align = "center">
   <img src = https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/logical-view.png>
