@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'main_screen.dart';
+
 
 class Clock extends StatefulWidget {
   const Clock({super.key});
@@ -16,8 +18,22 @@ class _Clock extends State<Clock> {
   Timer? timer;
   bool isRunning = false;
   bool doNotDisturb = false;
-  bool music = false;
+  bool music = true;
   DateTime timeNow = DateTime.now();
+  final audioPlayer = AudioPlayer();
+
+  Future setAudio() async{
+    final player = AudioCache(prefix: 'assets/');
+    final url = await player.load('study1.mp3');
+    audioPlayer.setUrl(url.path, isLocal: true);
+
+    if (music == true){
+      audioPlayer.play(url.path, isLocal: true);
+    }
+    else{
+      audioPlayer.pause();
+    }
+  }
 
   @override
   void initState() {
@@ -29,7 +45,8 @@ class _Clock extends State<Clock> {
           timeNow = DateTime.now();
         });
       },
-    );
+    ); 
+    setAudio();  
   }
 
   @override
@@ -88,7 +105,9 @@ class _Clock extends State<Clock> {
                     FloatingActionButton(
                       heroTag: "FAB4",
                       onPressed: () {
+                        setAudio();
                         music = !music;
+                        
                       },
                       backgroundColor: Color(0xffcd9d57),
                       child: Transform.scale(
@@ -103,6 +122,7 @@ class _Clock extends State<Clock> {
                     FloatingActionButton(
                       heroTag: "FAB5",
                       onPressed: () {
+                        audioPlayer.pause();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -155,4 +175,9 @@ class _Clock extends State<Clock> {
       style: TextStyle(fontSize: 65, color: Colors.white),
     );
   }
+
+
+
 }
+
+
