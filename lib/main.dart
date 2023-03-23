@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
       title: "Study Buddy",
       theme: ThemeData(
         primaryColor: Colors.yellow,
-        scaffoldBackgroundColor: Colors.white,
       ),
       home: WelcomeScreen(),
     );

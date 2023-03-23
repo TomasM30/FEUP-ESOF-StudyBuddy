@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Login/login_screen.dart';
+import 'package:study_buddy_app/Screens/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
@@ -10,7 +10,7 @@ import 'package:study_buddy_app/components/rounded_password_field.dart';
 
 import 'background.dart';
 
-class Body extends StatefulWidget{
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
   @override
@@ -45,7 +45,8 @@ class BodyState extends State<Body> {
             top: height * 0.35,
             child: Text(
               "SIGN UP",
-              style: TextStyle(fontSize: 30, color: Colors.white, fontFamily: "Content"),
+              style: TextStyle(
+                  fontSize: 30, color: Colors.white, fontFamily: "Content"),
             ),
           ),
           Positioned(
@@ -81,22 +82,36 @@ class BodyState extends State<Body> {
             child: RoundedButton(
               text: "SIGNUP",
               press: () async {
-                if (_formKey.currentState!.validate()){
-                  UserCredential? result = await _authService.registerWithEmailAndPassword(_email, _password);
+                if (_formKey.currentState!.validate()) {
+                  Object? result = await _authService
+                      .registerWithEmailAndPassword(_email, _password);
                   if (!mounted) return;
-                  if (result != null){
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return LoginScreen();
-                        },
-                      ),
-                    );
+                  if (result != null) {
+                    if (result == 'weak-password') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('The password provided is too weak.')));
+                    } else if (result == 'email-already-in-use') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'The account already exists for that email.')));
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return LoginScreen();
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Account created.')));
+                    }
                   } else {
                     setState(() {
                       _error = 'Failed to sign up';
                     });
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(_error)));
                   }
                 }
               },
@@ -155,12 +170,14 @@ class BodyState extends State<Body> {
               children: [
                 OtherLoginRegister(
                   iconSrc: "assets/icons/google.svg",
-                  press: (){
+                  press: () async {
+                    await _authService.signInWithGoogle();
+                    if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return LoginScreen();
+                          return MainScreen();
                         },
                       ),
                     );
@@ -174,4 +191,3 @@ class BodyState extends State<Body> {
     );
   }
 }
-
