@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
@@ -12,11 +13,11 @@ class Body extends StatefulWidget{
   const Body({Key? key}) : super(key: key);
 
   @override
-  _BodyState createState() => _BodyState();
+  BodyState createState() => BodyState();
 }
 
 
-class _BodyState  extends State<Body> {
+class BodyState  extends State<Body> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   String _email = '';
@@ -108,9 +109,22 @@ class _BodyState  extends State<Body> {
             left: width * 0.25,
             top: height * 0.7,
             child: AccountExists(
-              press: () {},
+              press: () {
+                Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return RegisterScreen();
+                  },
+                ),
+              );
+              },
             ),
           ),
+          Divider(
+            thickness: 6,
+            height: 6,
+          )
         ],
       ),
     );

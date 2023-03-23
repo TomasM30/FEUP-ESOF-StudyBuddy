@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Login/login_screen.dart';
+import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 
 import '../../../components/rounded_button.dart';
 import 'background.dart';
@@ -25,7 +26,7 @@ class Body extends StatelessWidget {
             left: width * 0.1,
             top: height * 0.57,
             child: RoundedButton(
-              text: "Login",
+              text: "LOGIN",
               press: () {
                 Navigator.pushReplacement(
                   context,
@@ -43,8 +44,14 @@ class Body extends StatelessWidget {
             left: width * 0.1,
             top: height * 0.66,
             child: RoundedButton(
-              text: "Register",
-              press: () {},
+              text: "SIGN UP",
+              press: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) {
+                    return RegisterScreen();
+                  },
+                ));
+              },
               textColor: Colors.black,
               bgcolor: Color(0xfff3edd7),
             ),
