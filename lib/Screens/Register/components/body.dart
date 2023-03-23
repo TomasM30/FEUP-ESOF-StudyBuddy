@@ -1,13 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Login/login_screen.dart';
+import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
+import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
 import 'package:study_buddy_app/components/rounded_password_field.dart';
 
 import 'background.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget{
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  BodyState createState() => BodyState();
+}
+
+class BodyState extends State<Body> {
+  final AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password = '';
+  String _error = '';
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -16,14 +32,7 @@ class Body extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            child: Divider(
-              height: 20,
-              thickness: 5,
-              color: Colors.black,
-            ),
-          ),
-          Positioned(
-            left: width*0.25,
+            left: width * 0.25,
             top: height * 0.05,
             child: Text(
               "STUDY" '\n' "BUDDY",
@@ -33,21 +42,24 @@ class Body extends StatelessWidget {
           ),
           Positioned(
             left: width * 0.1,
-            top: height * 0.3,
+            top: height * 0.35,
             child: Text(
               "SIGN UP",
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 30, color: Colors.white, fontFamily: "Content"),
             ),
           ),
           Positioned(
             left: width * 0.1,
             top: height * 0.4,
             child: Form(
+              key: _formKey,
               child: RoundedInputField(
                 hintText: "Your email",
                 icon: Icons.email,
                 onChanged: (value) {
-
+                  setState(() {
+                    _email = value.trim();
+                  });
                 },
               ),
             ),
@@ -57,7 +69,9 @@ class Body extends StatelessWidget {
             top: height * 0.49,
             child: RoundedPasswordField(
               onChanged: (value) {
-
+                setState(() {
+                  _password = value.trim();
+                });
               },
             ),
           ),
@@ -66,7 +80,25 @@ class Body extends StatelessWidget {
             top: height * 0.6,
             child: RoundedButton(
               text: "SIGNUP",
-              press: () {
+              press: () async {
+                if (_formKey.currentState!.validate()){
+                  UserCredential? result = await _authService.registerWithEmailAndPassword(_email, _password);
+                  if (!mounted) return;
+                  if (result != null){
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  } else {
+                    setState(() {
+                      _error = 'Failed to sign up';
+                    });
+                  }
+                }
               },
               textColor: Colors.black,
               bgcolor: Color(0xd0f3edd7),
@@ -89,9 +121,57 @@ class Body extends StatelessWidget {
               },
             ),
           ),
-          
+          Positioned(
+            top: height * 0.74,
+            left: width * 0.25,
+            right: width * 0.25,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Color(0xd0f3edd7),
+                    thickness: 1.5,
+                  ),
+                ),
+                SizedBox(width: width * 0.02),
+                Text(
+                  "OR",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: width * 0.02),
+                Expanded(
+                  child: Divider(
+                    color: Color(0xd0f3edd7),
+                    thickness: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 680),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OtherLoginRegister(
+                  iconSrc: "assets/icons/google.svg",
+                  press: (){
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

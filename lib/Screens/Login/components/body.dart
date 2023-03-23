@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:study_buddy_app/Screens/Login/login_screen.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
 import 'package:study_buddy_app/components/rounded_password_field.dart';
@@ -30,7 +32,7 @@ class BodyState  extends State<Body> {
     double height = MediaQuery.of(context).size.height;
     return Background(
       child: Stack(
-        children: <Widget>[
+        children: [
           Positioned(
             left: width * 0.25,
             top: height * 0.05,
@@ -42,10 +44,10 @@ class BodyState  extends State<Body> {
           ),
           Positioned(
             left: width * 0.1,
-            top: height * 0.3,
+            top: height * 0.35,
             child: Text(
-              "LOGIN",
-              style: TextStyle(fontSize: 30),
+              "LOG IN",
+              style: TextStyle(fontSize: 30, color: Colors.white, fontFamily: "Content"),
             ),
           ),
           Positioned(
@@ -121,10 +123,54 @@ class BodyState  extends State<Body> {
               },
             ),
           ),
-          Divider(
-            thickness: 6,
-            height: 6,
-          )
+          Positioned(
+            top: height * 0.74,
+            left: width * 0.25,
+            right: width * 0.25,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Color(0xd0f3edd7),
+                    thickness: 1.5,
+                  ),
+                ),
+                SizedBox(width: width * 0.02),
+                Text(
+                  "OR",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: width * 0.02),
+                Expanded(
+                  child: Divider(
+                    color: Color(0xd0f3edd7),
+                    thickness: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 680),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OtherLoginRegister(
+                  iconSrc: "assets/icons/google.svg",
+                  press: (){
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
