@@ -1,9 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../components/email_box.dart';
-import '../../../components/password_box.dart';
+import 'package:study_buddy_app/Screens/main_screen.dart';
+import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/components/rounded_button.dart';
+import 'package:study_buddy_app/components/rounded_input_field.dart';
+import 'package:study_buddy_app/components/rounded_password_field.dart';
+import '../../../components/account_exists_field.dart';
 import 'background.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget{
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+
+class _BodyState  extends State<Body> {
+  final AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password = '';
+  String _error = '';
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -31,12 +50,66 @@ class Body extends StatelessWidget {
           Positioned(
             left: width * 0.1,
             top: height * 0.4,
-            child: EmailBox(width: width),
+            child: Form(
+              key: _formKey,
+              child: RoundedInputField(
+                hintText: "Your email",
+                icon: Icons.email,
+                onChanged: (value) {
+                  setState(() {
+                    _email = value.trim();
+                  });
+                },
+              ),
+            ),
           ),
           Positioned(
             left: width * 0.1,
-            top: height * 0.5,
-            child: PasswordBox(width: width),
+            top: height * 0.49,
+            child: RoundedPasswordField(
+              onChanged: (value) {
+                setState(() {
+                  _password = value.trim();
+                });
+              },
+            ),
+          ),
+          Positioned(
+            left: width * 0.1,
+            top: height * 0.6,
+            child: RoundedButton(
+              text: "LOGIN",
+              press: () async {
+                if (_formKey.currentState!.validate()) {
+                  UserCredential? result = await _authService.signInWithEmailAndPassword(_email, _password);
+                  if (!mounted) return;
+                  if(result != null){
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MainScreen();
+                        },
+                      ),
+                    );
+                  }
+                  if (result == null) {
+                    setState(() {
+                      _error = 'Failed to sign in';
+                    });
+                  }
+                }
+              },
+              textColor: Colors.black,
+              bgcolor: Color(0xd0f3edd7),
+            ),
+          ),
+          Positioned(
+            left: width * 0.25,
+            top: height * 0.7,
+            child: AccountExists(
+              press: () {},
+            ),
           ),
         ],
       ),
