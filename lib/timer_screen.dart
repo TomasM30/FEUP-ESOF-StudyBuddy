@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'main_screen.dart';
+import 'package:flutter_dnd/flutter_dnd.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Clock extends StatefulWidget {
   const Clock({super.key});
@@ -18,6 +20,41 @@ class _Clock extends State<Clock> {
   bool doNotDisturb = false;
   bool music = false;
   DateTime timeNow = DateTime.now();
+
+  Future<void> checkDndPermisions() async{
+    bool? isGranted = await FlutterDnd.isNotificationPolicyAccessGranted;
+    if (isGranted != null && !isGranted){
+      showNotificationBubble();
+      FlutterDnd.gotoPolicySettings();
+    }
+  }
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin(); 
+
+  void showNotificationBubble() async {
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      importance: Importance.high,
+      priority: Priority.high,
+      showWhen: false,
+    );
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Turn on DND access',
+      'Please turn on DND access for this app in your system settings',
+      platformChannelSpecifics,
+    );
+  }
 
   @override
   void initState() {
@@ -71,8 +108,11 @@ class _Clock extends State<Clock> {
                     ),
                     FloatingActionButton(
                       heroTag: "FAB3",
-                      onPressed: () {
+                      onPressed: () async{
+                        await checkDndPermisions();
                         doNotDisturb = !doNotDisturb;
+                        int filter = doNotDisturb ? FlutterDnd.INTERRUPTION_FILTER_ALARMS : FlutterDnd.INTERRUPTION_FILTER_ALL;
+                        FlutterDnd.setInterruptionFilter(filter);
                       },
                       backgroundColor: Color(0xffcd9d57),
                       child: Transform.scale(
