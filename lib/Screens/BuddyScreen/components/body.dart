@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/components/background.dart';
 import 'package:study_buddy_app/Screens/timer_screen.dart';
+import 'package:study_buddy_app/components/toogle_button_menu.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -15,32 +16,25 @@ class BodyState extends State<Body> {
     return Scaffold(
         body: Background(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Center(
-            child: Text(
-              "STUDY BUDDY",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-                color: Colors.white,
-              ),
-            ),
-          ),
           Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: FloatingActionButton(
-              heroTag: "FAB1",
-              onPressed: () {
+            padding: const EdgeInsets.all(8.0),
+            child: MenuButton(
+              press2: (){
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => Clock()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Clock();
+                    },
+                  ),
+                );
               },
-              backgroundColor: Color(0xffcd9d57),
-              child: Transform.scale(
-                scale: 1.7,
-                child: Icon(Icons.school),
-              ),
+              iconSrc1: 'assets/icons/settings.svg',
+              iconSrc2: 'assets/icons/studymode.svg',
+              iconSrc3: 'assets/icons/shop.svg',
             ),
           ),
         ],

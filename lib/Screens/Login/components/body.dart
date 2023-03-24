@@ -4,7 +4,7 @@ import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
-import 'package:study_buddy_app/components/custom_button.dart';
+import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
@@ -188,7 +188,7 @@ class BodyState extends State<Body> {
           Positioned(
             top: height * 0.01,
             left: width * 0.03,
-            child: CustomButtons(
+            child: CustomButtonsColor(
               iconSrc: "assets/icons/go-back-simple.svg",
               press: () {
                 if (!mounted) return;
@@ -200,7 +200,7 @@ class BodyState extends State<Body> {
                     },
                   ),
                 );
-              },
+              }, color: Color(0xd0f3edd7),
             ),
           ),
         ],
