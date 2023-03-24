@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 
-class MenuButton extends StatefulWidget {
+class MenuButtonH extends StatefulWidget {
   final String iconSrc1;
   final String iconSrc2;
   final String iconSrc3;
@@ -9,7 +9,7 @@ class MenuButton extends StatefulWidget {
   final VoidCallback? press2;
   final VoidCallback? press3;
 
-  const MenuButton({
+  const MenuButtonH({
     Key? key,
     required this.iconSrc1,
     required this.iconSrc2,
@@ -20,10 +20,10 @@ class MenuButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MenuButtonState createState() => MenuButtonState();
+  MenuButtonHState createState() => MenuButtonHState();
 }
 
-class MenuButtonState extends State<MenuButton> {
+class MenuButtonHState extends State<MenuButtonH> {
   bool _showButtons = false;
 
   void _toggleShowButtons() {
@@ -34,7 +34,7 @@ class MenuButtonState extends State<MenuButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
         CustomButtons(
           width: widget.width,
@@ -47,7 +47,7 @@ class MenuButtonState extends State<MenuButton> {
           height: 5,
         ),
         if (_showButtons)
-          Column(
+          Row(
             children: [
               CustomButtons(
                 width: widget.width,
