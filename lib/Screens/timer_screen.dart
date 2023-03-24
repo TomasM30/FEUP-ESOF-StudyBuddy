@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
-import 'main_screen.dart';
+import 'package:study_buddy_app/Screens/BuddyScreen/components/body.dart';
+import 'BuddyScreen/main_screen.dart';
 
 class Clock extends StatefulWidget {
   const Clock({super.key});

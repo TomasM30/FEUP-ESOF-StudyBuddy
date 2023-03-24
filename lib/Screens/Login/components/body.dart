@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
-import 'package:study_buddy_app/Screens/main_screen.dart';
+import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
+import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
+import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
@@ -181,6 +183,24 @@ class BodyState extends State<Body> {
                   },
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            top: height * 0.01,
+            left: width * 0.03,
+            child: CustomButtons(
+              iconSrc: "assets/icons/go-back-simple.svg",
+              press: () {
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return WelcomeScreen();
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ],

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'timer_screen.dart';
+import 'package:study_buddy_app/Screens/BuddyScreen/components/background.dart';
+import 'package:study_buddy_app/Screens/timer_screen.dart';
 
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
 
-class MainScreen extends StatefulWidget {
   @override
-  MainScreenState createState() => MainScreenState();
+  BodyState createState() => BodyState();
 }
 
-class MainScreenState extends State<MainScreen> {
+class BodyState extends State<Body> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-      backgroundColor: Color(0xff9ABA8F),
-      body: Column(
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Background(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -41,5 +44,7 @@ class MainScreenState extends State<MainScreen> {
             ),
           ),
         ],
-      ));
+      ),
+    ));
+  }
 }
