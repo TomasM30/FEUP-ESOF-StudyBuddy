@@ -34,6 +34,10 @@ flutter:
       fonts:
         - asset: assets/fonts/Content-Creator.ttf
 
+    - family: Wishes
+      fonts:
+        - asset: assets/fonts/Best-Wishes.ttf
+
   assets:
   - assets/images/
   - assets/icons/

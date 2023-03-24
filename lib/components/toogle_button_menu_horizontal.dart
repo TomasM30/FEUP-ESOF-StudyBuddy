@@ -5,9 +5,11 @@ class MenuButtonH extends StatefulWidget {
   final String iconSrc1;
   final String iconSrc2;
   final String iconSrc3;
+  final String iconSrc4;
   final double width;
   final VoidCallback? press2;
   final VoidCallback? press3;
+  final VoidCallback? press4;
 
   const MenuButtonH({
     Key? key,
@@ -17,6 +19,8 @@ class MenuButtonH extends StatefulWidget {
     this.width = 60,
     this.press2,
     this.press3,
+    required this.iconSrc4,
+    this.press4,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,7 @@ class MenuButtonHState extends State<MenuButtonH> {
           },
         ),
         SizedBox(
-          height: 5,
+          width: 5,
         ),
         if (_showButtons)
           Row(
@@ -55,12 +59,20 @@ class MenuButtonHState extends State<MenuButtonH> {
                 press: widget.press2,
               ),
               SizedBox(
-                height: 5,
+                width: 5,
               ),
               CustomButtons(
                 width: widget.width,
                 iconSrc: widget.iconSrc3,
                 press: widget.press3,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              CustomButtons(
+                width: widget.width,
+                iconSrc: widget.iconSrc4,
+                press: widget.press4,
               ),
             ],
           ),
