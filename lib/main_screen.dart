@@ -6,6 +6,7 @@ import 'timer_screen.dart';
 class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
+  
 }
 
 class MainScreenState extends State<MainScreen> {

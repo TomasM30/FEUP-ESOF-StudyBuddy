@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
+import 'package:namer_app/main.dart';
 import 'main_screen.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,44 +17,14 @@ class Clock extends StatefulWidget {
 class _Clock extends State<Clock> {
   Duration duration = Duration();
   Timer? timer;
-  bool isRunning = false;
-  bool doNotDisturb = false;
-  bool music = false;
   DateTime timeNow = DateTime.now();
+  bool isRunning = false;
 
   Future<void> checkDndPermisions() async{
     bool? isGranted = await FlutterDnd.isNotificationPolicyAccessGranted;
     if (isGranted != null && !isGranted){
-      showNotificationBubble();
-      FlutterDnd.gotoPolicySettings();
+      showDndDialog();
     }
-  }
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin(); 
-
-  void showNotificationBubble() async {
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'channel_id',
-      'channel_name',
-      importance: Importance.high,
-      priority: Priority.high,
-      showWhen: false,
-    );
-    var platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Turn on DND access',
-      'Please turn on DND access for this app in your system settings',
-      platformChannelSpecifics,
-    );
   }
 
   @override
@@ -66,6 +37,26 @@ class _Clock extends State<Clock> {
           timeNow = DateTime.now();
         });
       },
+    );
+  }
+
+  Future<void> showDndDialog() async{
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Heads Up!"),
+          content: const Text("To enable the Do-Not-Disturb mode through the app, you will have to allow the respective permissions in the settings menu"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                FlutterDnd.gotoPolicySettings();
+              },
+              child: const Text("Go to Settings")) 
+          ],
+        );
+      }
     );
   }
 
@@ -110,14 +101,14 @@ class _Clock extends State<Clock> {
                       heroTag: "FAB3",
                       onPressed: () async{
                         await checkDndPermisions();
-                        doNotDisturb = !doNotDisturb;
-                        int filter = doNotDisturb ? FlutterDnd.INTERRUPTION_FILTER_ALARMS : FlutterDnd.INTERRUPTION_FILTER_ALL;
+                        MyApp.doNotDisturb = !MyApp.doNotDisturb;
+                        int filter = MyApp.doNotDisturb ? FlutterDnd.INTERRUPTION_FILTER_ALARMS : FlutterDnd.INTERRUPTION_FILTER_ALL;
                         FlutterDnd.setInterruptionFilter(filter);
                       },
                       backgroundColor: Color(0xffcd9d57),
                       child: Transform.scale(
                         scale: 1.6,
-                        child: Icon(doNotDisturb
+                        child: Icon(!MyApp.doNotDisturb
                             ? Icons.notifications
                             : Icons.notifications_off),
                       ),
@@ -128,13 +119,13 @@ class _Clock extends State<Clock> {
                     FloatingActionButton(
                       heroTag: "FAB4",
                       onPressed: () {
-                        music = !music;
+                        MyApp.music = !MyApp.music;
                       },
                       backgroundColor: Color(0xffcd9d57),
                       child: Transform.scale(
                         scale: 1.7,
                         child:
-                            Icon(!music ? Icons.music_note : Icons.music_off),
+                            Icon(!MyApp.music ? Icons.music_note : Icons.music_off),
                       ),
                     ),
                     SizedBox(

@@ -14,4 +14,7 @@ class MyApp extends StatelessWidget {
       home: MainScreen(),
     );
   }
+  static bool isRunning = false;
+  static bool doNotDisturb = false;
+  static bool music = false;
 }
