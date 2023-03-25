@@ -1,0 +1,15 @@
+com.example.apktestproject.app-jetified-window-java-1.0.0-beta04-0 /home/work/.gradle/caches/transforms-3/006d93cd422dbc43e89591147c2de572/transformed/jetified-window-java-1.0.0-beta04/res
+com.example.apktestproject.app-media-1.1.0-1 /home/work/.gradle/caches/transforms-3/13f29b4003f18f53249d90821a7f80a9/transformed/media-1.1.0/res
+com.example.apktestproject.app-core-1.6.0-2 /home/work/.gradle/caches/transforms-3/4ca28c4a71705f8a687c69dda140a277/transformed/core-1.6.0/res
+com.example.apktestproject.app-jetified-annotation-experimental-1.1.0-3 /home/work/.gradle/caches/transforms-3/8965c941cf4bee4d72541b965c7c9d39/transformed/jetified-annotation-experimental-1.1.0/res
+com.example.apktestproject.app-jetified-window-1.0.0-beta04-4 /home/work/.gradle/caches/transforms-3/dee59bb480020f42d53c2ea15e4501f7/transformed/jetified-window-1.0.0-beta04/res
+com.example.apktestproject.app-debug-5 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/android/app/src/debug/res
+com.example.apktestproject.app-main-6 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/android/app/src/main/res
+com.example.apktestproject.app-pngs-7 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/generated/res/pngs/debug
+com.example.apktestproject.app-resValues-8 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/generated/res/resValues/debug
+com.example.apktestproject.app-rs-9 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/generated/res/rs/debug
+com.example.apktestproject.app-mergeDebugResources-10 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.example.apktestproject.app-mergeDebugResources-11 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.example.apktestproject.app-merged_res-12 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/app/intermediates/merged_res/debug
+com.example.apktestproject.app-packaged_res-13 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/flutter_dnd/intermediates/packaged_res/debug
+com.example.apktestproject.app-packaged_res-14 /home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/build/flutter_local_notifications/intermediates/packaged_res/debug
