@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -18,17 +19,16 @@ class _Clock extends State<Clock> {
   Timer? timer;
   bool isRunning = false;
   bool doNotDisturb = false;
-  bool music = true;
+  bool music = false;
   DateTime timeNow = DateTime.now();
   final audioPlayer = AudioPlayer();
 
   Future setAudio() async{
-    final player = AudioCache(prefix: 'assets/');
-    final url = await player.load('study1.mp3');
-    audioPlayer.setUrl(url.path, isLocal: true);
+    const url = "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
+    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
 
     if (music == true){
-      audioPlayer.play(url.path, isLocal: true);
+      audioPlayer.play(url, isLocal: false);
     }
     else{
       audioPlayer.pause();
@@ -49,6 +49,7 @@ class _Clock extends State<Clock> {
     setAudio();  
   }
 
+  // Create a reference to a file from a Google Cloud Storage URI
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Color(0xffDFAD47),
@@ -105,15 +106,15 @@ class _Clock extends State<Clock> {
                     FloatingActionButton(
                       heroTag: "FAB4",
                       onPressed: () {
-                        setAudio();
                         music = !music;
+                        setAudio();
                         
                       },
                       backgroundColor: Color(0xffcd9d57),
                       child: Transform.scale(
                         scale: 1.7,
                         child:
-                            Icon(!music ? Icons.music_note : Icons.music_off),
+                            Icon(music ? Icons.music_note : Icons.music_off),
                       ),
                     ),
                     SizedBox(
