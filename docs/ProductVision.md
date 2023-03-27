@@ -16,3 +16,11 @@ Study Buddy is a dynamic and immersive learning companion that empowers students
   * Feature 7 - <em><strong>Ingame Currency</strong></em> that can be earned by leveling up, providing players with a sense of progression and accomplishment as they play;
   * Feature 8 - The <em><strong>Shop</strong></em> allows players to purchase items that can be used to decorate their buddy's space;
   * Feature 9 - To incentivize consistent studying habits, achieving study goals for a consecutive number of days will result in a <em><strong>Streak</strong></em>, rewarding players with increased amounts of XP and ingame currency to help them level up and progress even faster;
+
+## Assumptions and dependencies
+
+* A device able to execute the apk;
+* Internet connection needed to:
+  * SignIn and SignUp;
+  * Connect to the database;
+* Email or Gmail account;

@@ -1,0 +1,4 @@
+#Mon Mar 27 14:45:26 WEST 2023
+base.0=/home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/app/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
