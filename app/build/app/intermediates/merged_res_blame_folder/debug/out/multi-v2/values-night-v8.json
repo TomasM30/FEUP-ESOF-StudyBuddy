@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.apktestproject.app-mergeDebugResources-10:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.apktestproject.app-mergeDebugResources-14:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/home/work/Desktop/code_file/2Sem/ES/2LEIC05T3/app/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
