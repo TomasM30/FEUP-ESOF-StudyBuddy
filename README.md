@@ -5,6 +5,7 @@ The product is described in full here, from a high-level concept to low-level im
 
 * Business Modeling
   * [Product Vision](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/docs/ProductVision.md)
+  * [Project Management](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/docs/management.md)
   * [Elevator Pitch] <del>not yet implemented</del>
 * Requirements
   * [Domain Modeling](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/docs/DomainModelling.md)
