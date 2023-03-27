@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_horizontal.dart';
+import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
@@ -18,8 +20,6 @@ class Body extends StatefulWidget {
 class BodyState extends State<Body> {
   Duration duration = Duration();
   Timer? timer;
-  bool doNotDisturb = false;
-  bool music = false;
   DateTime timeNow = DateTime.now();
   final audioPlayer = AudioPlayer();
 
@@ -28,12 +28,39 @@ class BodyState extends State<Body> {
     const url = "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
     audioPlayer.setReleaseMode(ReleaseMode.LOOP);
 
-    if (music == true){
+    if (MyApp.music == true){
       audioPlayer.play(url, isLocal: false);
     }
     else{
       audioPlayer.pause();
     }
+  }
+
+  Future<void> checkDndPermisions() async{
+    bool? isGranted = await FlutterDnd.isNotificationPolicyAccessGranted;
+    if (isGranted != null && !isGranted){
+      showDndDialog();
+    }
+  }
+
+  Future<void> showDndDialog() async{
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: const Text("Heads Up!"),
+            content: const Text("To enable the Do-Not-Disturb mode through the app, you will have to allow the respective permissions in the settings menu"),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    FlutterDnd.gotoPolicySettings();
+                  },
+                  child: const Text("Go to Settings"))
+            ],
+          );
+        }
+    );
   }
 
   @override
@@ -70,6 +97,7 @@ class BodyState extends State<Body> {
                   child: MenuButtonH(
                     press4: () {
                       audioPlayer.pause();
+                      MyApp.music = false;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -79,21 +107,24 @@ class BodyState extends State<Body> {
                         ),
                       );
                     },
-                    press2: () {
+                    press2: () async {
+                      await checkDndPermisions();
                       setState(() {
-                        doNotDisturb = !doNotDisturb;
+                        MyApp.doNotDisturb = !MyApp.doNotDisturb;
+                        int filter = MyApp.doNotDisturb ? FlutterDnd.INTERRUPTION_FILTER_ALARMS : FlutterDnd.INTERRUPTION_FILTER_ALL;
+                        FlutterDnd.setInterruptionFilter(filter);
                       });
                     },
                     press3: () {
                       setState(() {
-                        music = !music;
+                        MyApp.music = !MyApp.music;
                         setAudio();
                       });
                     },
                     iconSrc1: 'assets/icons/settings.svg',
-                    iconSrc3: music ? 'assets/icons/soundon.svg' : 'assets/icons/soundoff.svg',
+                    iconSrc3: MyApp.music ? 'assets/icons/soundon.svg' : 'assets/icons/soundoff.svg',
                     iconSrc4: 'assets/icons/exit.svg',
-                    iconSrc2: !doNotDisturb ? 'assets/icons/notifoff.svg' : 'assets/icons/notifon.svg',
+                    iconSrc2: MyApp.doNotDisturb ? 'assets/icons/notifoff.svg' : 'assets/icons/notifon.svg',
                     width: 70,
                   ),
                 ),

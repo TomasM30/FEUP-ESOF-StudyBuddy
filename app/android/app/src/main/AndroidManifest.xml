@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.apktestproject">
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
    <application
-        android:label="apktestproject"
+        android:label="Study Buddy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

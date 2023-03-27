@@ -26,4 +26,6 @@ class MyApp extends StatelessWidget {
       home: WelcomeScreen(),
     );
   }
+  static bool music = false;
+  static bool doNotDisturb = false;
 }
