@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 
-class MenuButton extends StatefulWidget {
+class MenuButtonH extends StatefulWidget {
   final String iconSrc1;
   final String iconSrc2;
   final String iconSrc3;
+  final String iconSrc4;
   final double width;
   final VoidCallback? press2;
   final VoidCallback? press3;
+  final VoidCallback? press4;
 
-  const MenuButton({
+  const MenuButtonH({
     Key? key,
     required this.iconSrc1,
     required this.iconSrc2,
@@ -17,13 +19,15 @@ class MenuButton extends StatefulWidget {
     this.width = 60,
     this.press2,
     this.press3,
+    required this.iconSrc4,
+    this.press4,
   }) : super(key: key);
 
   @override
-  MenuButtonState createState() => MenuButtonState();
+  MenuButtonHState createState() => MenuButtonHState();
 }
 
-class MenuButtonState extends State<MenuButton> {
+class MenuButtonHState extends State<MenuButtonH> {
   bool _showButtons = false;
 
   void _toggleShowButtons() {
@@ -34,7 +38,7 @@ class MenuButtonState extends State<MenuButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
         CustomButtons(
           width: widget.width,
@@ -44,10 +48,10 @@ class MenuButtonState extends State<MenuButton> {
           },
         ),
         SizedBox(
-          height: 5,
+          width: 5,
         ),
         if (_showButtons)
-          Column(
+          Row(
             children: [
               CustomButtons(
                 width: widget.width,
@@ -55,12 +59,20 @@ class MenuButtonState extends State<MenuButton> {
                 press: widget.press2,
               ),
               SizedBox(
-                height: 5,
+                width: 5,
               ),
               CustomButtons(
                 width: widget.width,
                 iconSrc: widget.iconSrc3,
                 press: widget.press3,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              CustomButtons(
+                width: widget.width,
+                iconSrc: widget.iconSrc4,
+                press: widget.press4,
               ),
             ],
           ),
