@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy_app/app/lib/Screens/Login/login_screen.dart';
-import 'package:study_buddy_app/app/lib/Screens/Register/register_screen.dart';
+import 'package:study_buddy_app/Screens/Login/login_screen.dart';
+import 'package:study_buddy_app/Screens/Register/register_screen.dart';
+
 
 import '../../../components/rounded_button.dart';
 import 'background.dart';

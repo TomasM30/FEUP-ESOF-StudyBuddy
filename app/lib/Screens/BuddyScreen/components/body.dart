@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy_app/app/lib/Screens/BuddyScreen/components/background.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
+
+import 'background.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:study_buddy_app/lib/Screens/Welcome/welcome_screen.dart';
+import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

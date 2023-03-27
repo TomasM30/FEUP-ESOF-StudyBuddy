@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -20,6 +21,20 @@ class BodyState extends State<Body> {
   bool doNotDisturb = false;
   bool music = false;
   DateTime timeNow = DateTime.now();
+  final audioPlayer = AudioPlayer();
+
+
+  Future setAudio() async{
+    const url = "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
+    audioPlayer.setReleaseMode(ReleaseMode.LOOP);
+
+    if (music == true){
+      audioPlayer.play(url, isLocal: false);
+    }
+    else{
+      audioPlayer.pause();
+    }
+  }
 
   @override
   void initState() {
@@ -54,6 +69,7 @@ class BodyState extends State<Body> {
                   padding: const EdgeInsets.only(top: 15, left: 8),
                   child: MenuButtonH(
                     press4: () {
+                      audioPlayer.pause();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -71,10 +87,11 @@ class BodyState extends State<Body> {
                     press3: () {
                       setState(() {
                         music = !music;
+                        setAudio();
                       });
                     },
                     iconSrc1: 'assets/icons/settings.svg',
-                    iconSrc3: !music ? 'assets/icons/soundon.svg' : 'assets/icons/soundoff.svg',
+                    iconSrc3: music ? 'assets/icons/soundon.svg' : 'assets/icons/soundoff.svg',
                     iconSrc4: 'assets/icons/exit.svg',
                     iconSrc2: !doNotDisturb ? 'assets/icons/notifoff.svg' : 'assets/icons/notifon.svg',
                     width: 70,
