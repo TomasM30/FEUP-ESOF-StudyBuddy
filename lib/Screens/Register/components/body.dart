@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:study_buddy_app/Screens/Register/register_screen.dart';
-import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
+import 'package:study_buddy_app/Screens/Login/login_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
+import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
+import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
 import 'package:study_buddy_app/components/rounded_password_field.dart';
+
 import 'background.dart';
 
 class Body extends StatefulWidget {
@@ -45,7 +47,7 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.35,
             child: Text(
-              "LOG IN",
+              "SIGN UP",
               style: TextStyle(
                   fontSize: 30, color: Colors.white, fontFamily: "Content"),
             ),
@@ -81,34 +83,35 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.6,
             child: RoundedButton(
-              text: "LOGIN",
+              text: "SIGNUP",
               press: () async {
                 if (_formKey.currentState!.validate()) {
                   Object? result = await _authService
-                      .signInWithEmailAndPassword(_email, _password);
+                      .registerWithEmailAndPassword(_email, _password);
                   if (!mounted) return;
                   if (result != null) {
-                    if (result == 'user-not-found') {
+                    if (result == 'weak-password') {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('No user found for that email.')));
-                    } else if (result == 'wrong-password') {
+                          content: Text('The password provided is too weak.')));
+                    } else if (result == 'email-already-in-use') {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text('Wrong password provided for that user.')));
+                          content: Text(
+                              'The account already exists for that email.')));
                     } else {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return MainScreen();
+                            return LoginScreen();
                           },
                         ),
                       );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Account created.')));
                     }
-                  }
-                  if (result == null) {
+                  } else {
                     setState(() {
-                      _error = 'Failed to sign in';
+                      _error = 'Failed to sign up';
                     });
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(_error)));
@@ -123,12 +126,13 @@ class BodyState extends State<Body> {
             left: width * 0.25,
             top: height * 0.7,
             child: AccountExists(
+              login: false,
               press: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return RegisterScreen();
+                      return LoginScreen();
                     },
                   ),
                 );

@@ -16,7 +16,7 @@ class Background extends StatelessWidget {
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-            image: AssetImage("assets/images/register&login_screen_bg.png"),
+            image: AssetImage("assets/images/study_mode_bg.png"),
             fit: BoxFit.cover),
       ),
       child: child,

@@ -17,7 +17,7 @@ class AccountExists extends StatelessWidget {
       children: <Widget>[
         Text(
           login ? "Don't have an Account? " : "Already have an Account? ",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,),
         ),
         GestureDetector(
           onTap: press,

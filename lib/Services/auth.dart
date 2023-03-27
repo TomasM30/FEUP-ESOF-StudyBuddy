@@ -1,16 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 class AuthService {
-
-
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -22,9 +20,8 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
   // Register with email and password
-  Future<UserCredential?> registerWithEmailAndPassword(
+  Future<Object?> registerWithEmailAndPassword(
       String email, String password) async {
     try {
       UserCredential credential =
@@ -36,10 +33,10 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
-        return null;
+        return e.code;
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
-        return null;
+        return e.code;
       }
     } catch (e) {
       print(e);
@@ -49,7 +46,7 @@ class AuthService {
   }
 
   // Sign in with email and password
-  Future<UserCredential?> signInWithEmailAndPassword(
+  Future<Object?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final credential = await FirebaseAuth.instance
@@ -58,11 +55,14 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
+        return e.code;
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
+        return e.code;
       }
     } catch (e) {
       print(e);
+      return null;
     }
     return null;
   }
