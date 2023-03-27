@@ -1,4 +1,4 @@
-name: namer_app
+name: study_buddy_app
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -17,6 +17,10 @@ dependencies:
   intl: ^0.18.0
   audioplayers: ^0.20.1
   firebase_storage: ^11.0.16
+  firebase_core: ^2.8.0
+  firebase_auth: ^4.3.0
+  google_sign_in: ^6.0.2
+  flutter_svg: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -27,5 +31,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  fonts:
+    - family: Content
+      fonts:
+        - asset: assets/fonts/Content-Creator.ttf
+
+    - family: Wishes
+      fonts:
+        - asset: assets/fonts/Best-Wishes.ttf
+
   assets:
-    - assets/
+  - assets/images/
+  - assets/icons/
+  - assets/fonts/
