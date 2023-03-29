@@ -72,6 +72,32 @@ class AuthService {
     await FirebaseAuth.instance.signOut();
   }
 
+// Change user email
+  Future<String> changeEmail(String email) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return "User not signed in.";
+    }
+    try {
+      if(user.email == email) {
+        return "That is already your email.";
+      }
+      await user.updateEmail(email);
+      return "Email updated";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        return 'The account already exists for that email.';
+      }
+      return e.code;
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+
+
+
   // Get the current user
   User? getCurrentUser() {
     User? user = FirebaseAuth.instance.currentUser;

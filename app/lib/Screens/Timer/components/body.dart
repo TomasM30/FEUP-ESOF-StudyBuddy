@@ -10,6 +10,8 @@ import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
+
+
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -84,6 +86,7 @@ class BodyState extends State<Body> {
     stopTimer();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) => Scaffold(

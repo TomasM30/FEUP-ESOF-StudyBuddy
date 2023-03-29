@@ -4,7 +4,6 @@ import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
-import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
@@ -173,8 +172,8 @@ class BodyState extends State<Body> {
               children: [
                 OtherLoginRegister(
                   iconSrc: "assets/icons/google.svg",
-                  press: () async {
-                    await _authService.signInWithGoogle();
+                  press: () {
+                    _authService.signInWithGoogle();
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

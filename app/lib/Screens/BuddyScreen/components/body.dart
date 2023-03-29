@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
@@ -44,10 +45,21 @@ class BodyState extends State<Body> {
                       ),
                     );
                   },
+                  press4: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SettingsScreen();
+                        },
+                      ),
+                    );
+                  },
                   width: 70,
                   iconSrc1: 'assets/icons/settings.svg',
                   iconSrc2: 'assets/icons/studymode.svg',
                   iconSrc3: 'assets/icons/shop.svg',
+                  iconSrc4: 'assets/icons/newSettings.svg',
                 ),
               ),
             ),
