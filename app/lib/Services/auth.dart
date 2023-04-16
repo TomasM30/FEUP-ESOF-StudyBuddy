@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -25,13 +24,21 @@ class AuthService {
 
 
   // verify email
-  Future<void> verifyEmail() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (!user!.emailVerified) {
-      await user.sendEmailVerification();
-    }else{
-      return;
+  Future<Object?> verifyEmail() async {
+    try{
+      User? user = FirebaseAuth.instance.currentUser;
+      if (!user!.emailVerified) {
+        await user.sendEmailVerification();
+      }
+      return "Check you email for verification";
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      return e.code;
+    } catch (e) {
+      print(e);
+      return e;
     }
+    return null;
   }
 
   // Register with email and password
@@ -54,7 +61,7 @@ class AuthService {
       }
     } catch (e) {
       print(e);
-      return null;
+      return e;
     }
     return null;
   }
@@ -105,20 +112,18 @@ class AuthService {
 
 
   // Change user password
-  Future<String> changePassword() async{
+  Future<String?> changePassword({String? email}) async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return "User not signed in";
-    }
     try {
-      String? email = user.email;
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email!);
+      String? emailToSend = email ?? user?.email;
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailToSend!);
       return "Password updated";
     } catch (e) {
       print(e);
-      return e.toString();
+      return null;
     }
   }
+
 
   // Get the current user
   User? getCurrentUser() {

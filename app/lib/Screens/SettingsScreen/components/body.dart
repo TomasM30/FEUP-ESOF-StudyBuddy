@@ -125,7 +125,7 @@ class BodyState extends State<Body> {
                       bgcolor: Color(0xd0f3edd7),
                       press: () async {
                         _authService.signOut();
-                        String result = await AuthService().changePassword();
+                        String? result = await AuthService().changePassword();
                         if (result == "Password updated"){
                           result = "Check your email to reset your password";
                         }
@@ -133,7 +133,7 @@ class BodyState extends State<Body> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(
                           content: Text(
-                            result,
+                            result!,
                           ),
                         ));
                         Navigator.pushReplacement(

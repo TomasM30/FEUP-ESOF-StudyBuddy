@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
+import 'package:study_buddy_app/components/forgot_password.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
@@ -21,6 +22,7 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
   final AuthService _authService = AuthService();
+  final DatabaseService _databaseService = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
@@ -79,8 +81,36 @@ class BodyState extends State<Body> {
             ),
           ),
           Positioned(
+            left: width * 0.25,
+            top: height * 0.57,
+            child: ForgotPassword(
+              press: () async{
+                if(_email == ""){
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(
+                    content: Text(
+                      "Write your email on the field above and click on the reset button",
+                    ),
+                  ));
+                  return;
+                }
+                String? result = await AuthService().changePassword(email: _email);
+                if (result == "Password updated"){
+                  result = "Check your email to reset your password";
+                }
+                if (!mounted) return;
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(
+                  content: Text(
+                    result!,
+                  ),
+                ));
+              },
+            ),
+          ),
+          Positioned(
             left: width * 0.1,
-            top: height * 0.6,
+            top: height * 0.62,
             child: RoundedButton(
               text: "LOGIN",
               press: () async {
@@ -102,15 +132,8 @@ class BodyState extends State<Body> {
                             content: Text('Please verify your email.')));
                         return;
                       }else{
-                        try{
-                          final user = _authService.getCurrentUser();
-                          final databaseRef = FirebaseDatabase.instance.ref().child("Users");
-                          databaseRef.push().set({
-                            'email': user?.email,
-                          });
-                        } catch(e){
-                          print(e.toString());
-                        }
+                        _databaseService.importData();
+                        if(!mounted) return;
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -189,6 +212,7 @@ class BodyState extends State<Body> {
                   iconSrc: "assets/icons/google.svg",
                   press: () async {
                     await _authService.signInWithGoogle();
+                    _databaseService.importData();
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
