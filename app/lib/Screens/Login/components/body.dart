@@ -96,6 +96,11 @@ class BodyState extends State<Body> {
                           content:
                               Text('Wrong password provided for that user.')));
                     } else {
+                      if(_authService.getCurrentUser()?.emailVerified == false){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Please verify your email.')));
+                        return;
+                      }
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -18,6 +21,17 @@ class AuthService {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+
+  // verify email
+  Future<void> verifyEmail() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (!user!.emailVerified) {
+      await user.sendEmailVerification();
+    }else{
+      return;
+    }
   }
 
   // Register with email and password
@@ -74,29 +88,37 @@ class AuthService {
 
 // Change user email
   Future<String> changeEmail(String email) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return "User not signed in.";
-    }
     try {
-      if(user.email == email) {
-        return "That is already your email.";
-      }
-      await user.updateEmail(email);
+      await FirebaseAuth.instance.currentUser?.verifyBeforeUpdateEmail(email);
+
+      // Return a success message
       return "Email updated";
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
+      if (e.code == "email-already-in-use") {
+        return "Email is already in use by another account.";
       }
-      return e.code;
+      return "Failed to update email";
+    } catch (e) {
+      return "Failed to update email";
+    }
+  }
+
+
+  // Change user password
+  Future<String> changePassword() async{
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return "User not signed in";
+    }
+    try {
+      String? email = user.email;
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email!);
+      return "Password updated";
     } catch (e) {
       print(e);
       return e.toString();
     }
   }
-
-
-
 
   // Get the current user
   User? getCurrentUser() {

@@ -97,6 +97,8 @@ class BodyState extends State<Body> {
                           content: Text(
                               'The account already exists for that email.')));
                     } else {
+                      await _authService.verifyEmail();
+                      if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -172,8 +174,8 @@ class BodyState extends State<Body> {
               children: [
                 OtherLoginRegister(
                   iconSrc: "assets/icons/google.svg",
-                  press: () {
-                    _authService.signInWithGoogle();
+                  press: () async {
+                    await _authService.signInWithGoogle();
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
