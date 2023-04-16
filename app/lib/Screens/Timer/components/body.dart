@@ -4,6 +4,7 @@ import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
+import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_horizontal.dart';
 import 'package:study_buddy_app/main.dart';
@@ -20,10 +21,13 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
+  int xpAmount = MyApp.xpAmount;
+  final DatabaseService _databaseService = DatabaseService();
   Duration duration = Duration();
   Timer? timer;
   DateTime timeNow = DateTime.now();
   final audioPlayer = AudioPlayer();
+  bool isFirstHour = true;
 
 
   Future setAudio() async{
@@ -68,6 +72,7 @@ class BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+    isFirstHour = true;
     startTimer();
     Timer.periodic(
       Duration(seconds: 1),
@@ -99,6 +104,7 @@ class BodyState extends State<Body> {
                   padding: const EdgeInsets.only(top: 15, left: 8),
                   child: MenuButtonH(
                     press4: () {
+                      _databaseService.updateXp(xpAmount);
                       audioPlayer.pause();
                       MyApp.music = false;
                       Navigator.pushReplacement(
@@ -158,9 +164,20 @@ class BodyState extends State<Body> {
     setState(() {
       final seconds = duration.inSeconds + addSeconds;
 
+      if (duration.inHours == 1 && duration.inMinutes == 0 && duration.inSeconds%60 == 0){
+        isFirstHour = false;
+      }
+      else if ((isFirstHour && duration.inMinutes!= 0 && duration.inMinutes%2 == 0 && duration.inSeconds%60 == 0 && duration.inSeconds != 0) || (isFirstHour && duration.inMinutes == 0 && duration.inSeconds%60 == 0 && duration.inSeconds != 0)){
+        xpAmount++;
+      }
+      else if (!isFirstHour){
+        xpAmount = xpAmount + 2;
+      }
+      _databaseService.updateXp(xpAmount);
       duration = Duration(seconds: seconds);
     });
   }
+
 
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
