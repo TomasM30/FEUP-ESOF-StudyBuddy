@@ -11,8 +11,6 @@ import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
-
-
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -29,34 +27,34 @@ class BodyState extends State<Body> {
   final audioPlayer = AudioPlayer();
   bool isFirstHour = true;
 
-
-  Future setAudio() async{
-    const url = "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
+  Future setAudio() async {
+    const url =
+        "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
     audioPlayer.setReleaseMode(ReleaseMode.LOOP);
 
-    if (MyApp.music == true){
+    if (MyApp.music == true) {
       audioPlayer.play(url, isLocal: false);
-    }
-    else{
+    } else {
       audioPlayer.pause();
     }
   }
 
-  Future<void> checkDndPermisions() async{
+  Future<void> checkDndPermisions() async {
     bool? isGranted = await FlutterDnd.isNotificationPolicyAccessGranted;
-    if (isGranted != null && !isGranted){
+    if (isGranted != null && !isGranted) {
       showDndDialog();
     }
   }
 
-  Future<void> showDndDialog() async{
+  Future<void> showDndDialog() async {
     return showDialog<void>(
         context: context,
         barrierDismissible: true,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Heads Up!"),
-            content: const Text("To enable the Do-Not-Disturb mode through the app, you will have to allow the respective permissions in the settings menu"),
+            content: const Text(
+                "To enable the Do-Not-Disturb mode through the app, you will have to allow the respective permissions in the settings menu"),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
@@ -65,8 +63,7 @@ class BodyState extends State<Body> {
                   child: const Text("Go to Settings"))
             ],
           );
-        }
-    );
+        });
   }
 
   @override
@@ -92,7 +89,6 @@ class BodyState extends State<Body> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Background(
@@ -105,12 +101,14 @@ class BodyState extends State<Body> {
                   child: MenuButtonH(
                     press4: () {
                       _databaseService.updateXp(xpAmount);
+                      MyApp.xpAmount = xpAmount;
                       audioPlayer.pause();
                       MyApp.music = false;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) {
+                          builder: (BuildContext context) {
+                            super.widget;
                             return MainScreen();
                           },
                         ),
@@ -120,7 +118,9 @@ class BodyState extends State<Body> {
                       await checkDndPermisions();
                       setState(() {
                         MyApp.doNotDisturb = !MyApp.doNotDisturb;
-                        int filter = MyApp.doNotDisturb ? FlutterDnd.INTERRUPTION_FILTER_ALARMS : FlutterDnd.INTERRUPTION_FILTER_ALL;
+                        int filter = MyApp.doNotDisturb
+                            ? FlutterDnd.INTERRUPTION_FILTER_ALARMS
+                            : FlutterDnd.INTERRUPTION_FILTER_ALL;
                         FlutterDnd.setInterruptionFilter(filter);
                       });
                     },
@@ -131,17 +131,18 @@ class BodyState extends State<Body> {
                       });
                     },
                     iconSrc1: 'assets/icons/settings.svg',
-                    iconSrc3: MyApp.music ? 'assets/icons/soundon.svg' : 'assets/icons/soundoff.svg',
+                    iconSrc3: MyApp.music
+                        ? 'assets/icons/soundon.svg'
+                        : 'assets/icons/soundoff.svg',
                     iconSrc4: 'assets/icons/exit.svg',
-                    iconSrc2: MyApp.doNotDisturb ? 'assets/icons/notifoff.svg' : 'assets/icons/notifon.svg',
+                    iconSrc2: MyApp.doNotDisturb
+                        ? 'assets/icons/notifoff.svg'
+                        : 'assets/icons/notifon.svg',
                     width: 70,
                   ),
                 ),
               ),
-
-              Align(
-                  alignment: Alignment.center,
-                  child: buildTime()),
+              Align(alignment: Alignment.center, child: buildTime()),
               Padding(
                 padding: const EdgeInsets.only(bottom: 50),
                 child: Align(
@@ -149,7 +150,9 @@ class BodyState extends State<Body> {
                   child: Text(
                     DateFormat('hh:mm a').format(timeNow),
                     style: TextStyle(
-                        fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
+                        fontSize: 50,
+                        color: Colors.white,
+                        fontFamily: "Wishes"),
                   ),
                 ),
               )
@@ -164,20 +167,27 @@ class BodyState extends State<Body> {
     setState(() {
       final seconds = duration.inSeconds + addSeconds;
 
-      if (duration.inHours == 1 && duration.inMinutes == 0 && duration.inSeconds%60 == 0){
+      if (duration.inHours == 1 &&
+          duration.inMinutes == 0 &&
+          duration.inSeconds % 60 == 0) {
         isFirstHour = false;
-      }
-      else if ((isFirstHour && duration.inMinutes!= 0 && duration.inMinutes%2 == 0 && duration.inSeconds%60 == 0 && duration.inSeconds != 0) || (isFirstHour && duration.inMinutes == 0 && duration.inSeconds%60 == 0 && duration.inSeconds != 0)){
+      } else if ((isFirstHour &&
+              duration.inMinutes != 0 &&
+              duration.inMinutes % 2 == 0 &&
+              duration.inSeconds % 60 == 0 &&
+              duration.inSeconds != 0) ||
+          (isFirstHour &&
+              duration.inMinutes == 0 &&
+              duration.inSeconds % 60 == 0 &&
+              duration.inSeconds != 0)) {
         xpAmount++;
-      }
-      else if (!isFirstHour){
+      } else if (!isFirstHour) {
         xpAmount = xpAmount + 2;
       }
       _databaseService.updateXp(xpAmount);
       duration = Duration(seconds: seconds);
     });
   }
-
 
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -201,4 +211,5 @@ class BodyState extends State<Body> {
       style: TextStyle(fontSize: 90, color: Colors.white, fontFamily: "Wishes"),
     );
   }
+
 }

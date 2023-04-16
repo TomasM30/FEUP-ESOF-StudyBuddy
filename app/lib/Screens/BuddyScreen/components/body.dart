@@ -5,6 +5,7 @@ import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
 import 'package:study_buddy_app/main.dart';
 
+
 import 'background.dart';
 
 class Body extends StatefulWidget {
@@ -15,6 +16,8 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
+  int xpAmount = MyApp.xpAmount;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,23 +32,31 @@ class BodyState extends State<Body> {
                   iconSrc: 'assets/icons/money.svg',
                 ),
                 Text(
-                    "€${MyApp.coinsAmount}",
+                    "\$${MyApp.coinsAmount}",
                     style: TextStyle(
-                      fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
+                      fontSize: 40, color: Colors.white, fontFamily: "Wishes"),
                 ),
               ]),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15, left: 8),
+              padding: const EdgeInsets.only(top: 5, left: 8),
+              child: CustomButtons(
+                width: 85,
+                iconSrc: 'assets/icons/newLevelStar.svg',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 32, left: 35),
               child: Align(
                 alignment: Alignment.topLeft,
                   child: Text(
-                    MyApp.xpAmount.toString(),
+                    xpAmount.toString(),
                     style: TextStyle(
                         fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
                   ),
               ),
             ),
+
             Align(
               alignment: Alignment.topRight,
               child: Padding(
