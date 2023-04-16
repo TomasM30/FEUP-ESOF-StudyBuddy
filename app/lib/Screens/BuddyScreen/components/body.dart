@@ -3,6 +3,7 @@ import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
+import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
@@ -17,17 +18,32 @@ class BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Background(
+      body: Background(
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: CustomButtons(
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                CustomButtons(
                   width: 70,
                   iconSrc: 'assets/icons/money.svg',
                 ),
+                Text(
+                    "€${MyApp.coinsAmount}",
+                    style: TextStyle(
+                      fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
+                ),
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                  child: Text(
+                    MyApp.xpAmount.toString(),
+                    style: TextStyle(
+                        fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
+                  ),
               ),
             ),
             Align(

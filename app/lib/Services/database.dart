@@ -63,6 +63,22 @@ class DatabaseService {
     }
   }
 
+  Future<int?> getCoins() async {
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('Users/$userId/coins').get();
+      final coins = snapshot.value as int?;
+      return coins;
+    } on FirebaseException catch (e) {
+      print(e);
+      return null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<void> updateXp(int xp) async {
     try {
       final uid = _authService.getCurrentUser()!.uid;

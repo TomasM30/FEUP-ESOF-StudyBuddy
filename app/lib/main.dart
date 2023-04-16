@@ -17,7 +17,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static int xpAmount = 0; // Declare a static variable xpAmount
+  static int xpAmount = 0;
+  static int coinsAmount = 0;
   static bool music = false;
   static bool doNotDisturb = false;
   final DatabaseService _databaseService = DatabaseService();
@@ -27,6 +28,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     _databaseService.getXp().then((value) {
       xpAmount = value!;
+    });
+    _databaseService.getCoins().then((value) {
+      coinsAmount = value!;
+      print(coinsAmount);
     });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
