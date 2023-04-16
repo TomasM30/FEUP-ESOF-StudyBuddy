@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
@@ -100,15 +101,27 @@ class BodyState extends State<Body> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Please verify your email.')));
                         return;
+                      }else{
+                        try{
+                          final user = _authService.getCurrentUser();
+                          final databaseRef = FirebaseDatabase.instance.ref().child("Users");
+                          databaseRef.push().set({
+                            'email': user?.email,
+                          });
+                        } catch(e){
+                          print(e.toString());
+                        }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MainScreen();
+                            },
+                          ),
+                        );
+
                       }
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return MainScreen();
-                          },
-                        ),
-                      );
+
                     }
                   }
                   if (result == null) {
