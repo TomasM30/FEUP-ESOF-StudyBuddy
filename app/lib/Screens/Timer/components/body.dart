@@ -99,11 +99,15 @@ class BodyState extends State<Body> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15, left: 8),
                   child: MenuButtonH(
-                    press4: () {
+                    press4: () async {
                       _databaseService.updateXp(xpAmount);
                       MyApp.xpAmount = xpAmount;
+                      int lvl = await _databaseService.getLvl((await _databaseService.getXp())!);
+                      _databaseService.updateLevel(lvl);
+                      MyApp.level = lvl;
                       audioPlayer.pause();
                       MyApp.music = false;
+                      if(!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

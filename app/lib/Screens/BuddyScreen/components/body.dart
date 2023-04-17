@@ -1,10 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
+import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
+import 'package:study_buddy_app/components/level_up_bar.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
 import 'package:study_buddy_app/main.dart';
-
 
 import 'background.dart';
 
@@ -16,47 +19,101 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
-  int xpAmount = MyApp.xpAmount;
+  double lft = 40;
+  double aux = 0.11;
+  bool showXp = false;
+  DatabaseService _databaseService = DatabaseService();
+
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    if (MyApp.level == 1) {
+      lft = 45;
+    } else if (MyApp.level == 20) {
+      lft = 32;
+    }
+    for (int i = 0; i<MyApp.xpAmount.toString().length; i++){
+      if(MyApp.xpAmount == 1){
+        break;
+      }
+      aux = aux - 0.013;
+    }
     return Scaffold(
       body: Background(
         child: Stack(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 15),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 CustomButtons(
                   width: 70,
                   iconSrc: 'assets/icons/money.svg',
                 ),
                 Text(
-                    "\$${MyApp.coinsAmount}",
-                    style: TextStyle(
+                  "\$${MyApp.coinsAmount}",
+                  style: TextStyle(
                       fontSize: 40, color: Colors.white, fontFamily: "Wishes"),
                 ),
               ]),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 8),
-              child: CustomButtons(
-                width: 85,
-                iconSrc: 'assets/icons/newLevelStar.svg',
+            Visibility(
+              visible: showXp,
+              child: Positioned(
+                top: height*0.08,
+                left: width*0.08,
+                child: LevelUpBar(
+                  currentLevel: MyApp.level,
+                  currentXp:MyApp.xpAmount,
+                  nextLevelXp: _databaseService.getNextLvlXp(MyApp.level),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: showXp,
+              child: Positioned(
+                top: height*0.165,
+                left: width*aux,
+                child: Transform.rotate(
+                  angle: pi/2,
+                  child: Text(
+                    "${MyApp.xpAmount}",
+                    style: TextStyle(
+                        fontSize: 40,
+                        color: Color(0xffffffff),
+                        fontFamily: "Wishes"),
+                  ),
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 32, left: 35),
+              padding: const EdgeInsets.only(top: 5, left: 10.5),
+              child: CustomButtons(
+                width: 90,
+                iconSrc: 'assets/icons/newLevelStar.svg',
+                press: () {
+                  aux = 0.11;
+                  setState(() {
+                    showXp = !showXp;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 32, left: lft),
               child: Align(
                 alignment: Alignment.topLeft,
-                  child: Text(
-                    xpAmount.toString(),
-                    style: TextStyle(
-                        fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
-                  ),
+                child: Text(
+                  "${MyApp.level}",
+                  style: TextStyle(
+                      fontSize: 50,
+                      color: Colors.white,
+                      fontFamily: "Wishes"),
+                ),
               ),
             ),
-
             Align(
               alignment: Alignment.topRight,
               child: Padding(

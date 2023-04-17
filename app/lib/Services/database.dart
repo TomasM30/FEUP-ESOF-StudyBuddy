@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,7 +19,7 @@ class DatabaseService {
       }
       final data = {
         'email': user.email,
-        'xp': 0,
+        'xp': 1,
         'level': 1,
         'coins': 0,
         'streak': 0,
@@ -57,11 +58,10 @@ class DatabaseService {
       return xpValue;
     } on FirebaseException catch (e) {
       print(e);
-      return null;
     } catch (e) {
       print(e);
-      return null;
     }
+    return null;
   }
 
   Future<int?> getCoins() async {
@@ -73,11 +73,30 @@ class DatabaseService {
       return coins;
     } on FirebaseException catch (e) {
       print(e);
-      return null;
     } catch (e) {
       print(e);
-      return null;
     }
+    return null;
+  }
+
+  Future<int?> getLevel() async {
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('Users/$userId/level').get();
+      final level = snapshot.value as int?;
+      return level;
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<int> getLvl(int xp) async{
+    int level = min(20, (log(xp) / log(pow(e,((log(44640))/19)))).floor() + 1);
+    return level;
   }
 
   Future<void> updateXp(int xp) async {
@@ -94,6 +113,28 @@ class DatabaseService {
       print(e);
     }
   }
+
+  Future<void> updateLevel(int lvl) async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference xpRef = FirebaseDatabase.instance
+          .ref()
+          .child("Users")
+          .child(uid);
+      await xpRef.update({"level": lvl});
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  int getNextLvlXp(int lvl) {
+    int xp = pow(e,(pow(e, ((log(44640))/19)) * (lvl)-pow(e, ((log(44640))/19)))).floor();
+    return xp;
+  }
+
+
 
 
 }

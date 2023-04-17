@@ -11,6 +11,7 @@ import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
 import 'package:study_buddy_app/components/rounded_password_field.dart';
+import 'package:study_buddy_app/main.dart';
 import 'background.dart';
 
 class Body extends StatefulWidget {
@@ -132,7 +133,11 @@ class BodyState extends State<Body> {
                             content: Text('Please verify your email.')));
                         return;
                       }else{
-                        _databaseService.importData();
+                        await _databaseService.importData();
+                        int lvl = await _databaseService.getLvl((await _databaseService.getXp())!);
+                        _databaseService.updateLevel(lvl);
+                        MyApp.level = lvl;
+                        MyApp.xpAmount = (await _databaseService.getXp())!;
                         if(!mounted) return;
                         Navigator.pushReplacement(
                           context,
@@ -212,7 +217,11 @@ class BodyState extends State<Body> {
                   iconSrc: "assets/icons/google.svg",
                   press: () async {
                     await _authService.signInWithGoogle();
-                    _databaseService.importData();
+                    await _databaseService.importData();
+                    int lvl = await _databaseService.getLvl((await _databaseService.getXp())!);
+                    _databaseService.updateLevel(lvl);
+                    MyApp.level = lvl;
+                    MyApp.xpAmount = (await _databaseService.getXp())!;
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
