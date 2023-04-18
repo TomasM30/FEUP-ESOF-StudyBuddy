@@ -6,9 +6,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:study_buddy_app/Screens/Timer/components/body.dart';
 import 'package:study_buddy_app/main.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
 
 @GenerateNiceMocks([MockSpec<FlutterDnd>()])
-import 'body_test.mocks.dart';
 void main(){
   TestWidgetsFlutterBinding.ensureInitialized();
   
@@ -40,7 +40,7 @@ void main(){
     BodyState music = BodyState();
  
     test('Music should be able to play', (){
-      MyApp.music = true;
+      UserSettings.music = true;
       music.setAudio();
       expect(music.audioPlayer, isNotNull);
       music.audioPlayer.onPlayerStateChanged.listen((event) {
@@ -50,7 +50,7 @@ void main(){
 
     test('Music should be able to stop', (){
       final music = BodyState();
-      MyApp.music = false;
+      UserSettings.music = false;
       music.setAudio();
       music.audioPlayer.onPlayerStateChanged.listen((event) {
         expect(event, PlayerState.PAUSED);
