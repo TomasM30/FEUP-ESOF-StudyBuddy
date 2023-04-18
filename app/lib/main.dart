@@ -10,6 +10,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
@@ -26,6 +27,4 @@ class MyApp extends StatelessWidget {
       home: WelcomeScreen(),
     );
   }
-  static bool music = false;
-  static bool doNotDisturb = false;
 }

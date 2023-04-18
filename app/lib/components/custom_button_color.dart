@@ -7,6 +7,7 @@ class CustomButtonsColor extends StatelessWidget {
   final Color color;
   final double width;
 
+
   const CustomButtonsColor({
     super.key,
     required this.iconSrc,

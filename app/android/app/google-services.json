@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1044629755773",
+    "firebase_url": "https://study-buddy-6443c-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "study-buddy-6443c",
     "storage_bucket": "study-buddy-6443c.appspot.com"
   },
@@ -14,7 +15,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "1044629755773-onc208j13e5ahjc7fll0g2icmpu5rmkb.apps.googleusercontent.com",
+          "client_id": "1044629755773-3j9hrumfhsa8dkqo704v39q3g8kf12kk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apktestproject",
+            "certificate_hash": "1118cf230ff8fb7885adbf3c452704e9b1665212"
+          }
+        },
+        {
+          "client_id": "1044629755773-poq7tccqtntrobbjjdc5335j5nclcka6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apktestproject",
+            "certificate_hash": "7ba026673139ccc2cc4e39ccdeb1a8183f5d9e54"
+          }
+        },
+        {
+          "client_id": "1044629755773-oaj0434svs071drtn559etmqsggviri8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +44,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1044629755773-onc208j13e5ahjc7fll0g2icmpu5rmkb.apps.googleusercontent.com",
+              "client_id": "1044629755773-oaj0434svs071drtn559etmqsggviri8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1044629755773-7njgb18b0rppsbe64ie2l3f0u112p8s4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.apktestproject"
+              }
             }
           ]
         }
@@ -43,7 +67,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "1044629755773-onc208j13e5ahjc7fll0g2icmpu5rmkb.apps.googleusercontent.com",
+          "client_id": "1044629755773-jd9o6rbkgb7arj6d83mh435ladiunbgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.esofproj",
+            "certificate_hash": "7ba026673139ccc2cc4e39ccdeb1a8183f5d9e54"
+          }
+        },
+        {
+          "client_id": "1044629755773-oaj0434svs071drtn559etmqsggviri8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -56,8 +88,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1044629755773-onc208j13e5ahjc7fll0g2icmpu5rmkb.apps.googleusercontent.com",
+              "client_id": "1044629755773-oaj0434svs071drtn559etmqsggviri8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1044629755773-7njgb18b0rppsbe64ie2l3f0u112p8s4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.apktestproject"
+              }
             }
           ]
         }
