@@ -59,6 +59,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1044629755773',
     projectId: 'study-buddy-6443c',
     storageBucket: 'study-buddy-6443c.appspot.com',
+    databaseURL: 'https://study-buddy-6443c-default-rtdb.europe-west1.firebasedatabase.app',
+
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
