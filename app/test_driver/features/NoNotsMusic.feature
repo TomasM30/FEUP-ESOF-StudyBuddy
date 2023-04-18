@@ -21,5 +21,5 @@ Feature: Toggle Music and Notifications
     Then I tap the "toggleButtonH" button
 
     Given I have "dndButton" and "musicButton" and "studyModeScreen"
-    Then I tap the "dndButton" button
     Then I tap the "musicButton" button
+    Then I tap the "dndButton" button
