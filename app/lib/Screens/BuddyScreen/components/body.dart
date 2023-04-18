@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
 import 'package:study_buddy_app/Services/database.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/level_up_bar.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
-import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
@@ -24,23 +24,23 @@ class BodyState extends State<Body> {
   bool showXp = false;
   DatabaseService _databaseService = DatabaseService();
 
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    if (MyApp.level == 1) {
+    if (UserSettings.level == 1) {
       lft = 45;
-    } else if (MyApp.level == 20) {
+    } else if (UserSettings.level == 20) {
       lft = 32;
     }
-    for (int i = 0; i<MyApp.xpAmount.toString().length; i++){
-      if(MyApp.xpAmount == 1){
+    for (int i = 0; i < UserSettings.xpAmount.toString().length; i++) {
+      if (UserSettings.xpAmount == 1) {
         break;
       }
       aux = aux - 0.013;
     }
     return Scaffold(
+      key: Key("buddyScreen"),
       body: Background(
         child: Stack(
           children: [
@@ -53,7 +53,7 @@ class BodyState extends State<Body> {
                   iconSrc: 'assets/icons/money.svg',
                 ),
                 Text(
-                  "\$${MyApp.coinsAmount}",
+                  "\$${UserSettings.coinsAmount}",
                   style: TextStyle(
                       fontSize: 40, color: Colors.white, fontFamily: "Wishes"),
                 ),
@@ -62,24 +62,25 @@ class BodyState extends State<Body> {
             Visibility(
               visible: showXp,
               child: Positioned(
-                top: height*0.08,
-                left: width*0.08,
+                top: height * 0.08,
+                left: width * 0.08,
                 child: LevelUpBar(
-                  currentLevel: MyApp.level,
-                  currentXp:MyApp.xpAmount,
-                  nextLevelXp: _databaseService.getNextLvlXp(MyApp.level),
+                  currentLevel: UserSettings.level,
+                  currentXp: UserSettings.xpAmount,
+                  nextLevelXp:
+                      _databaseService.getNextLvlXp(UserSettings.level),
                 ),
               ),
             ),
             Visibility(
               visible: showXp,
               child: Positioned(
-                top: height*0.165,
-                left: width*aux,
+                top: height * 0.165,
+                left: width * aux,
                 child: Transform.rotate(
-                  angle: pi/2,
+                  angle: pi / 2,
                   child: Text(
-                    "${MyApp.xpAmount}",
+                    "${UserSettings.xpAmount}",
                     style: TextStyle(
                         fontSize: 40,
                         color: Color(0xffffffff),
@@ -106,11 +107,9 @@ class BodyState extends State<Body> {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "${MyApp.level}",
+                  "${UserSettings.level}",
                   style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.white,
-                      fontFamily: "Wishes"),
+                      fontSize: 50, color: Colors.white, fontFamily: "Wishes"),
                 ),
               ),
             ),

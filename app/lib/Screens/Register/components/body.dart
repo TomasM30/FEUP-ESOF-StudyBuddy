@@ -4,13 +4,13 @@ import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/Services/database.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
 import 'package:study_buddy_app/components/rounded_input_field.dart';
 import 'package:study_buddy_app/components/rounded_password_field.dart';
-import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
@@ -49,6 +49,7 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.35,
             child: Text(
+              key: Key("signupScreen"),
               "SIGN UP",
               style: TextStyle(
                   fontSize: 30, color: Colors.white, fontFamily: "Content"),
@@ -85,6 +86,7 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.6,
             child: RoundedButton(
+              key: Key("signupButton"),
               text: "SIGNUP",
               press: () async {
                 if (_formKey.currentState!.validate()) {
@@ -180,10 +182,11 @@ class BodyState extends State<Body> {
                   press: () async {
                     await _authService.signInWithGoogle();
                     await _databaseService.importData();
-                    int lvl = await _databaseService.getLvl((await _databaseService.getXp())!);
+                    int lvl = await _databaseService
+                        .getLvl((await _databaseService.getXp())!);
                     _databaseService.updateLevel(lvl);
-                    MyApp.level = lvl;
-                    MyApp.xpAmount = (await _databaseService.getXp())!;
+                    UserSettings.level = lvl;
+                    UserSettings.xpAmount = (await _databaseService.getXp())!;
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
@@ -213,7 +216,8 @@ class BodyState extends State<Body> {
                     },
                   ),
                 );
-              }, color: Color(0xd0f3edd7),
+              },
+              color: Color(0xd0f3edd7),
             ),
           ),
         ],

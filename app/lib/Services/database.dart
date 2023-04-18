@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -7,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 
 class DatabaseService {
-
   final AuthService _authService = AuthService();
 
   Future<void> importData() async {
@@ -32,12 +30,11 @@ class DatabaseService {
     }
   }
 
-
   Future<bool> checkKeyExistence(String key) async {
     try {
       final user = _authService.getCurrentUser();
       DatabaseReference reference =
-      FirebaseDatabase.instance.ref().child('Users').child(user!.uid);
+          FirebaseDatabase.instance.ref().child('Users').child(user!.uid);
       DatabaseEvent snapshot = (await reference.once());
       return snapshot.snapshot.value != null;
     } on FirebaseException catch (e) {
@@ -94,18 +91,17 @@ class DatabaseService {
     return null;
   }
 
-  Future<int> getLvl(int xp) async{
-    int level = min(20, (log(xp) / log(pow(e,((log(44640))/19)))).floor() + 1);
+  Future<int> getLvl(int xp) async {
+    int level =
+        min(20, (log(xp) / log(pow(e, ((log(44640)) / 19)))).floor() + 1);
     return level;
   }
 
   Future<void> updateXp(int xp) async {
     try {
       final uid = _authService.getCurrentUser()!.uid;
-      DatabaseReference xpRef = FirebaseDatabase.instance
-          .ref()
-          .child("Users")
-          .child(uid);
+      DatabaseReference xpRef =
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
       await xpRef.update({"xp": xp});
     } on FirebaseException catch (e) {
       print(e);
@@ -117,10 +113,8 @@ class DatabaseService {
   Future<void> updateLevel(int lvl) async {
     try {
       final uid = _authService.getCurrentUser()!.uid;
-      DatabaseReference xpRef = FirebaseDatabase.instance
-          .ref()
-          .child("Users")
-          .child(uid);
+      DatabaseReference xpRef =
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
       await xpRef.update({"level": lvl});
     } on FirebaseException catch (e) {
       print(e);
@@ -130,11 +124,9 @@ class DatabaseService {
   }
 
   int getNextLvlXp(int lvl) {
-    int xp = pow(e,(pow(e, ((log(44640))/19)) * (lvl)-pow(e, ((log(44640))/19)))).floor();
+    int xp = pow(e,
+            (pow(e, ((log(44640)) / 19)) * (lvl) - pow(e, ((log(44640)) / 19))))
+        .floor();
     return xp;
   }
-
-
-
-
 }

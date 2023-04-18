@@ -126,12 +126,11 @@ class BodyState extends State<Body> {
                       press: () async {
                         _authService.signOut();
                         String? result = await AuthService().changePassword();
-                        if (result == "Password updated"){
+                        if (result == "Password updated") {
                           result = "Check your email to reset your password";
                         }
                         if (!mounted) return;
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             result!,
                           ),

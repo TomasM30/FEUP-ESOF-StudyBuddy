@@ -41,6 +41,7 @@ class MenuButtonVState extends State<MenuButtonV> {
     return Column(
       children: [
         CustomButtons(
+          key: Key("toggleButton"),
           width: widget.width,
           iconSrc: widget.iconSrc1,
           press: () {
@@ -54,6 +55,7 @@ class MenuButtonVState extends State<MenuButtonV> {
           Column(
             children: [
               CustomButtons(
+                key: Key("studyModeButton"),
                 width: widget.width,
                 iconSrc: widget.iconSrc2,
                 press: widget.press2,

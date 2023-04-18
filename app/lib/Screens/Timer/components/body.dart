@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_horizontal.dart';
-import 'package:study_buddy_app/main.dart';
 
 import 'background.dart';
 
@@ -19,7 +19,7 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
-  int xpAmount = MyApp.xpAmount;
+  int xpAmount = UserSettings.xpAmount;
   final DatabaseService _databaseService = DatabaseService();
   Duration duration = Duration();
   Timer? timer;
@@ -32,7 +32,7 @@ class BodyState extends State<Body> {
         "https://firebasestorage.googleapis.com/v0/b/study-buddy-6443c.appspot.com/o/music%2Fstudy1.mp3?alt=media&token=c31e03f3-0820-4bd8-befc-b0762b9554f2";
     audioPlayer.setReleaseMode(ReleaseMode.LOOP);
 
-    if (MyApp.music == true) {
+    if (UserSettings.music == true) {
       audioPlayer.play(url, isLocal: false);
     } else {
       audioPlayer.pause();
@@ -91,6 +91,7 @@ class BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        key: Key("studyModeScreen"),
         body: Background(
           child: Stack(
             children: [
@@ -101,13 +102,14 @@ class BodyState extends State<Body> {
                   child: MenuButtonH(
                     press4: () async {
                       _databaseService.updateXp(xpAmount);
-                      MyApp.xpAmount = xpAmount;
-                      int lvl = await _databaseService.getLvl((await _databaseService.getXp())!);
+                      UserSettings.xpAmount = xpAmount;
+                      int lvl = await _databaseService
+                          .getLvl((await _databaseService.getXp())!);
                       _databaseService.updateLevel(lvl);
-                      MyApp.level = lvl;
+                      UserSettings.level = lvl;
                       audioPlayer.pause();
-                      MyApp.music = false;
-                      if(!mounted) return;
+                      UserSettings.music = false;
+                      if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -121,8 +123,8 @@ class BodyState extends State<Body> {
                     press2: () async {
                       await checkDndPermisions();
                       setState(() {
-                        MyApp.doNotDisturb = !MyApp.doNotDisturb;
-                        int filter = MyApp.doNotDisturb
+                        UserSettings.doNotDisturb = !UserSettings.doNotDisturb;
+                        int filter = UserSettings.doNotDisturb
                             ? FlutterDnd.INTERRUPTION_FILTER_ALARMS
                             : FlutterDnd.INTERRUPTION_FILTER_ALL;
                         FlutterDnd.setInterruptionFilter(filter);
@@ -130,16 +132,16 @@ class BodyState extends State<Body> {
                     },
                     press3: () {
                       setState(() {
-                        MyApp.music = !MyApp.music;
+                        UserSettings.music = !UserSettings.music;
                         setAudio();
                       });
                     },
                     iconSrc1: 'assets/icons/settings.svg',
-                    iconSrc3: MyApp.music
+                    iconSrc3: UserSettings.music
                         ? 'assets/icons/soundon.svg'
                         : 'assets/icons/soundoff.svg',
                     iconSrc4: 'assets/icons/exit.svg',
-                    iconSrc2: MyApp.doNotDisturb
+                    iconSrc2: UserSettings.doNotDisturb
                         ? 'assets/icons/notifoff.svg'
                         : 'assets/icons/notifon.svg',
                     width: 70,
@@ -152,6 +154,7 @@ class BodyState extends State<Body> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Text(
+                    key: Key("timerText"),
                     DateFormat('hh:mm a').format(timeNow),
                     style: TextStyle(
                         fontSize: 50,
@@ -215,5 +218,4 @@ class BodyState extends State<Body> {
       style: TextStyle(fontSize: 90, color: Colors.white, fontFamily: "Wishes"),
     );
   }
-
 }

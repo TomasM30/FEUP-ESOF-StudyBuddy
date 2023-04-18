@@ -41,6 +41,7 @@ class MenuButtonHState extends State<MenuButtonH> {
     return Row(
       children: [
         CustomButtons(
+          key: Key("toggleButtonH"),
           width: widget.width,
           iconSrc: widget.iconSrc1,
           press: () {
@@ -54,6 +55,7 @@ class MenuButtonHState extends State<MenuButtonH> {
           Row(
             children: [
               CustomButtons(
+                key: Key("dndButton"),
                 width: widget.width,
                 iconSrc: widget.iconSrc2,
                 press: widget.press2,
@@ -62,6 +64,7 @@ class MenuButtonHState extends State<MenuButtonH> {
                 width: 5,
               ),
               CustomButtons(
+                key: Key("musicButton"),
                 width: widget.width,
                 iconSrc: widget.iconSrc3,
                 press: widget.press3,
