@@ -3,8 +3,9 @@ import 'package:study_buddy_app/Screens/Login/login_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/Services/database.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
-import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
 import 'package:study_buddy_app/components/rounded_button.dart';
@@ -22,10 +23,21 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
   final AuthService _authService = AuthService();
+  final DatabaseService _databaseService = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
   String _error = '';
+
+  String getEmail() {
+    return _email;
+  }
+  String getPassword() {
+    return _password;
+  }
+  String getError() {
+    return _error;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +59,7 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.35,
             child: Text(
+              key: Key("signupScreen"),
               "SIGN UP",
               style: TextStyle(
                   fontSize: 30, color: Colors.white, fontFamily: "Content"),
@@ -83,6 +96,7 @@ class BodyState extends State<Body> {
             left: width * 0.1,
             top: height * 0.6,
             child: RoundedButton(
+              key: Key("signupButton"),
               text: "SIGNUP",
               press: () async {
                 if (_formKey.currentState!.validate()) {
@@ -91,13 +105,17 @@ class BodyState extends State<Body> {
                   if (!mounted) return;
                   if (result != null) {
                     if (result == 'weak-password') {
+                      _error = 'The password provided is too weak.';
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('The password provided is too weak.')));
                     } else if (result == 'email-already-in-use') {
+                      _error = 'The account already exists for that email.';
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                               'The account already exists for that email.')));
                     } else {
+                      await _authService.verifyEmail();
+                      if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -175,6 +193,12 @@ class BodyState extends State<Body> {
                   iconSrc: "assets/icons/google.svg",
                   press: () async {
                     await _authService.signInWithGoogle();
+                    await _databaseService.importData();
+                    int lvl = await _databaseService
+                        .getLvl((await _databaseService.getXp())!);
+                    _databaseService.updateLevel(lvl);
+                    UserSettings.level = lvl;
+                    UserSettings.xpAmount = (await _databaseService.getXp())!;
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
@@ -204,7 +228,8 @@ class BodyState extends State<Body> {
                     },
                   ),
                 );
-              }, color: Color(0xd0f3edd7),
+              },
+              color: Color(0xd0f3edd7),
             ),
           ),
         ],

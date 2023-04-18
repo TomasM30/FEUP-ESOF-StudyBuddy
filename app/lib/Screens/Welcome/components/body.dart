@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Login/login_screen.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
+import 'package:study_buddy_app/components/rounded_button.dart';
 
-
-import '../../../components/rounded_button.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
@@ -15,18 +14,18 @@ class Body extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            left: -33, // Adjust the position as needed
+            left: width * (-0.085), // Adjust the position as needed
             top: height * 0.17, // Adjust the position as needed
             child: Image.asset(
               "assets/images/study_buddy_logo.png",
               width: 460,
             ),
           ),
-
           Positioned(
             left: width * 0.1,
             top: height * 0.60,
             child: RoundedButton(
+              key: Key("loginButton"),
               text: "LOGIN",
               press: () {
                 Navigator.pushReplacement(
@@ -45,6 +44,7 @@ class Body extends StatelessWidget {
             left: width * 0.1,
             top: height * 0.69,
             child: RoundedButton(
+              key: Key("registerButton"),
               text: "SIGN UP",
               press: () {
                 Navigator.pushReplacement(context, MaterialPageRoute(
