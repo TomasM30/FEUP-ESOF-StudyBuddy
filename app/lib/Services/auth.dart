@@ -22,10 +22,9 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
   // verify email
   Future<Object?> verifyEmail() async {
-    try{
+    try {
       User? user = FirebaseAuth.instance.currentUser;
       if (!user!.emailVerified) {
         await user.sendEmailVerification();
@@ -110,7 +109,6 @@ class AuthService {
     }
   }
 
-
   // Change user password
   Future<String?> changePassword({String? email}) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -123,7 +121,6 @@ class AuthService {
       return null;
     }
   }
-
 
   // Get the current user
   User? getCurrentUser() {
