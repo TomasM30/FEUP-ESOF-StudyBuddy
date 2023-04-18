@@ -22,10 +22,14 @@ dependencies:
   google_sign_in: ^6.0.2
   flutter_svg: ^2.0.4
   flutter_dnd: ^0.1.4
+  flutter_launcher_icons: ^0.12.0
+  test: ^1.22.0
+  mockito: ^5.4.0
+  build_runner: ^2.3.3
+  firebase_auth_mocks: ^0.11.0
   firebase_database: ^10.1.0
   flutter_gherkin: ^2.0.0
   glob: ^2.1.1
-
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +55,10 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/android.png"
+  adaptive_icon_background: "assets/icons/background.png"
+  adaptive_icon_foreground: "assets/icons/android.png"

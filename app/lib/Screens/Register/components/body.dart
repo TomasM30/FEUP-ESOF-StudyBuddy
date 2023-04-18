@@ -29,6 +29,16 @@ class BodyState extends State<Body> {
   String _password = '';
   String _error = '';
 
+  String getEmail() {
+    return _email;
+  }
+  String getPassword() {
+    return _password;
+  }
+  String getError() {
+    return _error;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -95,9 +105,11 @@ class BodyState extends State<Body> {
                   if (!mounted) return;
                   if (result != null) {
                     if (result == 'weak-password') {
+                      _error = 'The password provided is too weak.';
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('The password provided is too weak.')));
                     } else if (result == 'email-already-in-use') {
+                      _error = 'The account already exists for that email.';
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                               'The account already exists for that email.')));

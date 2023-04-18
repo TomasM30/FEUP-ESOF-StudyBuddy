@@ -27,3 +27,14 @@
 * The specifics of the main game logic that are ahead
 * How to connect all the user data with the database
 * Some little quality-of-life tweaks we could add in the future, but we still need to understand how to implement them
+
+## Release
+ * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.1.0)
+
+
+<br><br><br>
+
+# Second Iteration
+
+## Start of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i2s.png">
