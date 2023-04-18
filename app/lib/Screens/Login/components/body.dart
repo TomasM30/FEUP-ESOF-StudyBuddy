@@ -25,6 +25,18 @@ class BodyState extends State<Body> {
   String _password = '';
   String _error = '';
 
+  String getEmail(){
+    return _email;
+  }
+
+  String getPassword(){
+    return _password;
+  }
+
+  String getError(){
+    return _error;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
