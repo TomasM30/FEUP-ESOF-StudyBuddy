@@ -11,7 +11,7 @@ Feature: Toggle Music and Notifications
     Then I wait until the "buddyScreen" is present
 
     Given I have "toggleButton" and "buddyScreen"
-    Then I tap the "toggleButton" button
+    Then I am in the game
 
     Given I have "studyModeButton" and "buddyScreen"
     Then I tap the "studyModeButton" button

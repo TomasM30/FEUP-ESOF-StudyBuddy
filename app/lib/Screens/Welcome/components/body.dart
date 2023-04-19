@@ -14,11 +14,11 @@ class Body extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            left: width * (-0.085), // Adjust the position as needed
+            left: width * (-0.04), // Adjust the position as needed
             top: height * 0.17, // Adjust the position as needed
             child: Image.asset(
               "assets/images/study_buddy_logo.png",
-              width: 460,
+              width: 400,
             ),
           ),
           Positioned(
