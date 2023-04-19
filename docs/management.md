@@ -10,11 +10,11 @@
 
 ## The 4 questions
 
-### What Went Well?
+### What went well?
 * The successful distribution of all tasks allowed for a good workflow
 * Everything that was planned was accomplished on time
 
-### What Didn’t Go So Well?
+### What didn’t go so well?
 * Small changes were not attributed to the specific issue branch made for complicated merge to the Main branch
 * More things could have been done if it wasn't for the "language barrier" with Flutter
 
@@ -38,3 +38,29 @@
 
 ## Start of the Iteration
 <img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i2s.png">
+
+## End of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i2e.png">
+
+<br>
+
+## The 4 questions
+
+### What went well?
+ * We were able to extract, access and manage user data from the database
+ * We were able to successfully implement account management
+
+### What didn't go so well?
+ * Our teamwork this iteration wasn't the best, so our workflow was hindered by it
+ * We couldn't fully understand the testing syntax and our code needed refactoring to make testing possible
+ * Due to time constraints regarding our other university evaluations, we couldn't fully finished what we had planned for the iteration
+
+### What have we learned?
+ * We learned a lot about how the database works and how we can use it in the project
+
+### What still puzzles me?
+ * How to effectively time manage our iteration issues to be able to fully complete our plans
+ * How to manage our teamwork in a way that it helps with our workflow as a group
+
+ ## Release
+  * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.2.0)
