@@ -184,8 +184,9 @@ class BodyState extends State<Body> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 680),
+          Positioned(
+            top: height * 0.8,
+            left: width * 0.425,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -199,6 +200,7 @@ class BodyState extends State<Body> {
                     _databaseService.updateLevel(lvl);
                     UserSettings.level = lvl;
                     UserSettings.xpAmount = (await _databaseService.getXp())!;
+                    UserSettings.buddy = (await _databaseService.getBuddy())!;
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

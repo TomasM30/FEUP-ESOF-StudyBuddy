@@ -21,6 +21,7 @@ class DatabaseService {
         'level': 1,
         'coins': 0,
         'streak': 0,
+        'buddy': 0,
       };
       FirebaseDatabase.instance.ref().child("Users").child(user.uid).set(data);
     } on FirebaseException catch (e) {
@@ -43,6 +44,34 @@ class DatabaseService {
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  Future<int?> getBuddy() async {
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('Users/$userId/buddy').get();
+      final buddy = snapshot.value as int?;
+      return buddy;
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<void> updateBuddy(int choice) async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference buddyRef =
+      FirebaseDatabase.instance.ref().child("Users").child(uid);
+      await buddyRef.update({"buddy": choice});
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
     }
   }
 

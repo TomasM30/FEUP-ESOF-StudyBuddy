@@ -13,12 +13,14 @@ class Body extends StatelessWidget {
     return Background(
       child: Stack(
         children: <Widget>[
-          Positioned(
-            left: width * (-0.04), // Adjust the position as needed
-            top: height * 0.17, // Adjust the position as needed
-            child: Image.asset(
-              "assets/images/study_buddy_logo.png",
-              width: 400,
+          Padding(
+            padding: EdgeInsets.only(top: height*0.18),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                "assets/images/study_buddy_logo.png",
+                width: 400,
+              ),
             ),
           ),
           Positioned(
