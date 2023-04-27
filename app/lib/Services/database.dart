@@ -24,16 +24,16 @@ class DatabaseService {
         'streak': 0,
         'buddy': 0,
         'purchased': {
-          'Flower': {
-            'image': 'Teresa.png',
+          'Basil': {
+            'image': 'Manjerico.png',
             'coins': 0,
             'xp': 0,
-            'name': 'Flower',
-            'used': true,
+            'name': 'Basil',
+            'used': false,
             'sizeX': 100.01,
             'sizeY': 100.01,
-            'posX': 0.1,
-            'posY': 0.3,
+            'posX': 0.05,
+            'posY': 0.12,
           },
         },
       };
@@ -67,8 +67,12 @@ class DatabaseService {
       );
     });
 
+    purchases.sort((a, b) => a.xp.compareTo(b.xp));
+    print(purchases[0].xp);
+
     return purchases;
   }
+
 
   Future<List<ShopItem>> getPurchases() async {
     final user = _authService.getCurrentUser()?.uid;
@@ -249,7 +253,7 @@ class DatabaseService {
 
   Future<int> getLvl(int xp) async {
     int level =
-        min(20, (log(xp) / log(pow(e, ((log(44640)) / 19)))).floor() + 1);
+        min(20, (log(xp) / log(pow(e, ((log(44640)) / 19)))).floor()+1);
     return level;
   }
 
@@ -280,9 +284,7 @@ class DatabaseService {
   }
 
   int getNextLvlXp(int lvl) {
-    int xp = pow(e,
-            (pow(e, ((log(44640)) / 19)) * (lvl) - pow(e, ((log(44640)) / 19))))
-        .floor();
+    int xp = pow(e, ((log(44640)* (lvl)) / 19)).floor();
     return xp;
   }
 }

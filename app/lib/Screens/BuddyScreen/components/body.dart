@@ -70,37 +70,36 @@ class BodyState extends State<Body> {
               child: Row(
                 children: [
                   Transform.translate(
-                    offset: Offset(width*0.073, -height*0.0075),
+                    offset: Offset(width * 0.073, -height * 0.0075),
                     child: LevelUpBar(
                       currentLevel: UserSettings.level,
                       currentXp: UserSettings.xpAmount,
-                      nextLevelXp: _databaseService.getNextLvlXp(UserSettings.level),
+                      nextLevelXp:
+                          _databaseService.getNextLvlXp(UserSettings.level),
                     ),
                   ),
                   Transform.translate(
-                    offset: Offset(width*0.02, 0),
+                    offset: Offset(width * 0.02, 0),
                     child: Column(
-                      children: UserSettings.xpAmount.toString()
+                      children: UserSettings.xpAmount
+                          .toString()
                           .split('')
                           .map((char) => Text(
-                        char,
-                        style: TextStyle(
-                          fontSize: 23,
-                          color: Color(0xffffffff),
-                          fontFamily: "Wishes",
-                        ),
-                      ))
+                                char,
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  color: Color(0xffffffff),
+                                  fontFamily: "Wishes",
+                                ),
+                              ))
                           .toList(),
                     ),
                   ),
                 ],
               ),
             ),
-
           ],
-
         ),
-
         Padding(
           padding: const EdgeInsets.only(top: 5, left: 10.5),
           child: CustomButtons(

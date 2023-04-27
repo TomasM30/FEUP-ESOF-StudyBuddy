@@ -60,6 +60,7 @@ class BuddyGame extends FlameGame with TapDetector, PanDetector{
   Future<void> onLoad() async {
     super.onLoad();
     databaseService.getPurchases();
+    print(databaseService.getNextLvlXp(19));
 
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")

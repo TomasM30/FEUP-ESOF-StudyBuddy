@@ -41,7 +41,7 @@ class BodyState extends State<Body> {
       children: [
         Background(
           child: Container(
-            margin: EdgeInsets.only(top: screenHeight * 0.4),
+            margin: EdgeInsets.only(top: screenHeight * 0.36),
             child: ListView.builder(
               itemCount: UserSettings.shop.length,
               itemBuilder: (BuildContext context, int index) {
@@ -50,134 +50,144 @@ class BodyState extends State<Body> {
                     UserSettings.xpAmount < UserSettings.shop[index].xp;
                 bool coinsNeeded =
                     UserSettings.coinsAmount < UserSettings.shop[index].coins;
-                return ListTile(
-                  leading: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 44,
-                      minHeight: 44,
-                      maxWidth: 64,
-                      maxHeight: 64,
+                return SizedBox(
+                  height: screenHeight * 0.1,
+                  child: ListTile(
+                    leading: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: 44,
+                        minHeight: 44,
+                        maxWidth: 64,
+                        maxHeight: 64,
+                      ),
+                      child: xpNeeded
+                          ? Icon(Icons.lock)
+                          : Image.asset('assets/images/${item.image}'),
                     ),
-                    child: xpNeeded
-                        ? Icon(Icons.lock)
-                        : Image.asset('assets/images/${item.image}'),
-                  ),
-                  title: Text(
-                    item.name,
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: "Arial",
-                      decoration: TextDecoration.underline,
-                      decorationThickness: 2,
-                      decorationColor: Color(0xffdcdcc2),
+                    title: Text(
+                      item.name,
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: "Arial",
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 2,
+                        decorationColor: Color(0xffdcdcc2),
+                      ),
                     ),
+                    subtitle: itemExistsInShopAndPurchased(item)
+                        ? null
+                        : Text(
+                            "Coins: ${item.coins.toString()}"
+                            "\nXP: ${item.xp.toString()}",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontFamily: "Arial")),
+                    trailing: !xpNeeded
+                        ? CustomButtons(
+                            width: screenWidth * 0.15,
+                            iconSrc: !itemExistsInShopAndPurchased(item)
+                                ? "assets/icons/BuyIcon.svg"
+                                : (!getItemPurchased(item).used
+                                    ? "assets/icons/placeIcon.svg"
+                                    : "assets/icons/DisplaceIcon.svg"),
+                            press: () async {
+                              if (itemExistsInShopAndPurchased(item)) {
+                                if (getItemPurchased(item).used) {
+                                  getItemPurchased(item).used = false;
+                                  databaseService
+                                      .updatePurchases(UserSettings.purchased);
+                                } else {
+                                  getItemPurchased(item).used = true;
+                                  databaseService
+                                      .updatePurchases(UserSettings.purchased);
+                                }
+                              } else {
+                                if (!coinsNeeded) {
+                                  UserSettings.coinsAmount -= item.coins;
+                                  UserSettings.purchased.add(item);
+                                  databaseService
+                                      .updatePurchases(UserSettings.purchased);
+                                  databaseService
+                                      .updateCoins(UserSettings.coinsAmount);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Not enough coins"),
+                                    ),
+                                  );
+                                }
+                              }
+                              setState(() {});
+                            },
+                          )
+                        : null,
                   ),
-                  subtitle: itemExistsInShopAndPurchased(item)
-                      ? null
-                      : Text(
-                          "Coins: ${item.coins.toString()}"
-                          "\nXP: ${item.xp.toString()}",
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontFamily: "Arial")),
-                  trailing: !xpNeeded
-                      ? CustomButtons(
-                          width: screenWidth * 0.15,
-                          iconSrc: !itemExistsInShopAndPurchased(item)
-                              ? "assets/icons/shop.svg"
-                              : (getItemPurchased(item).used
-                                  ? "assets/icons/used.svg"
-                                  : "assets/icons/money.svg"),
-                          press: () async {
-                            if (itemExistsInShopAndPurchased(item)) {
-                              if (getItemPurchased(item).used) {
-                                getItemPurchased(item).used = false;
-                                databaseService
-                                    .updatePurchases(UserSettings.purchased);
-                              } else {
-                                getItemPurchased(item).used = true;
-                                databaseService
-                                    .updatePurchases(UserSettings.purchased);
-                              }
-                            } else {
-                              if (!coinsNeeded) {
-                                UserSettings.coinsAmount -= item.coins;
-                                UserSettings.purchased.add(item);
-                                databaseService
-                                    .updatePurchases(UserSettings.purchased);
-                                databaseService
-                                    .updateCoins(UserSettings.coinsAmount);
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Not enough coins"),
-                                  ),
-                                );
-                              }
-                            }
-                            setState(() {});
-                          },
-                          /*child: Text(
-                            itemExistsInShopAndPurchased(item)
-                                ? (getItemPurchased(item).used
-                                    ? 'Unuse'
-                                    : 'Use')
-                                : 'Buy',
-                          )*/
-                        )
-                      : null,
                 );
               },
             ),
           ),
         ),
         Positioned(
-          top: screenHeight * 0.17,
+          top: screenHeight * 0.2,
           left: screenWidth * 0.05,
-          child: Row(children: [
-            Stack(children: [
-              CustomButtons(
-                width: 90,
-                iconSrc: 'assets/icons/newLevelStar.svg',
-              ),
-              Positioned(
-                top: screenWidth * 0.08,
-                left: screenWidth * 0.06,
+          child: Row(
+            children: [
+              Stack(children: [
+                CustomButtons(
+                  width: 90,
+                  iconSrc: 'assets/icons/newLevelStar.svg',
+                ),
+                Positioned(
+                  top: screenWidth * 0.08,
+                  left: screenWidth * 0.06,
+                  child: Text(
+                    "XP",
+                    style: TextStyle(
+                        fontSize: 40,
+                        color: Color(0xffffffff),
+                        fontFamily: "Wishes"),
+                  ),
+                )
+              ]),
+              Padding(
+                padding: EdgeInsets.all(screenWidth * 0.02),
                 child: Text(
-                  "XP",
+                  "${UserSettings.xpAmount}",
                   style: TextStyle(
                       fontSize: 40,
                       color: Color(0xffffffff),
                       fontFamily: "Wishes"),
                 ),
-              )
-            ]),
-            Padding(
-              padding: EdgeInsets.only(left: screenWidth * 0.02),
-              child: Text(
-                "${UserSettings.xpAmount}",
-                style: TextStyle(
-                    fontSize: 40,
-                    color: Color(0xffffffff),
-                    fontFamily: "Wishes"),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: screenWidth * 0.2),
-              child: CustomButtons(
-                width: 70,
-                iconSrc: 'assets/icons/money.svg',
+            ],
+          ),
+        ),
+        Positioned(
+          top: screenHeight * 0.2,
+          left: screenWidth * 0.53,
+          child: Row(
+            children: [
+              Stack(children: [
+                CustomButtons(
+                  width: 80,
+                  iconSrc: 'assets/icons/money.svg',
+                ),
+              ]),
+              Padding(
+                padding: EdgeInsets.only(left: screenWidth * 0.01),
+                child: Text(
+                  "\$${UserSettings.coinsAmount}",
+                  style: TextStyle(
+                      fontSize: 40,
+                      color: Color(0xffffffff),
+                      fontFamily: "Wishes"),
+                ),
               ),
-            ),
-            Text(
-              "\$${UserSettings.coinsAmount}",
-              style: TextStyle(
-                  fontSize: 40, color: Colors.white, fontFamily: "Wishes"),
-            ),
-          ]),
+            ],
+          ),
         ),
         Padding(
           padding: EdgeInsets.only(top: screenHeight * 0.05),

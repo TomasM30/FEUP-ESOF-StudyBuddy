@@ -20,6 +20,7 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
   int xpAmount = UserSettings.xpAmount;
+  int coinsAmount = UserSettings.coinsAmount;
   final DatabaseService _databaseService = DatabaseService();
   Duration duration = Duration();
   Timer? timer;
@@ -101,8 +102,10 @@ class BodyState extends State<Body> {
                   padding: const EdgeInsets.only(top: 15, left: 8),
                   child: MenuButtonH(
                     press4: () async {
+                      _databaseService.updateCoins(coinsAmount);
                       _databaseService.updateXp(xpAmount);
                       UserSettings.xpAmount = xpAmount;
+                      UserSettings.coinsAmount = coinsAmount;
                       int lvl = await _databaseService
                           .getLvl((await _databaseService.getXp())!);
                       _databaseService.updateLevel(lvl);
@@ -188,10 +191,13 @@ class BodyState extends State<Body> {
               duration.inSeconds % 60 == 0 &&
               duration.inSeconds != 0)) {
         xpAmount++;
+        coinsAmount+=4;
       } else if (!isFirstHour) {
         xpAmount = xpAmount + 2;
+        coinsAmount+=4;
       }
       _databaseService.updateXp(xpAmount);
+      _databaseService.updateCoins(coinsAmount);
       duration = Duration(seconds: seconds);
     });
   }
