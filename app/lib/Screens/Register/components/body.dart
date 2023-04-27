@@ -201,6 +201,8 @@ class BodyState extends State<Body> {
                     UserSettings.level = lvl;
                     UserSettings.xpAmount = (await _databaseService.getXp())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
+                    UserSettings.purchased = (await _databaseService.getPurchases());
+                    UserSettings.shop = (await _databaseService.getShop());
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

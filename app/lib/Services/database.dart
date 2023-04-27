@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/components/shop_items.dart';
 
 class DatabaseService {
   final AuthService _authService = AuthService();
@@ -22,6 +23,19 @@ class DatabaseService {
         'coins': 0,
         'streak': 0,
         'buddy': 0,
+        'purchased': {
+          'Flower': {
+            'image': 'Teresa.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Flower',
+            'used': true,
+            'sizeX': 100.01,
+            'sizeY': 100.01,
+            'posX': 0.1,
+            'posY': 0.3,
+          },
+        },
       };
       FirebaseDatabase.instance.ref().child("Users").child(user.uid).set(data);
     } on FirebaseException catch (e) {
@@ -31,11 +45,111 @@ class DatabaseService {
     }
   }
 
+  Future<List<ShopItem>> getShop() async {
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('Shop').get();
+    final items = snapshot.value as Map<dynamic, dynamic>;
+    List<ShopItem> purchases = [];
+
+    items.forEach((key, value) {
+      final itemData = value as Map<dynamic, dynamic>;
+      purchases.add(
+        ShopItem(
+          image: itemData['image'],
+          coins: itemData['coins'],
+          xp: itemData['xp'],
+          name: itemData['name'],
+          sizeX: itemData['sizeX'],
+          sizeY: itemData['sizeY'],
+          posX: itemData['posX'],
+          posY: itemData['posY'],
+        ),
+      );
+    });
+
+    return purchases;
+  }
+
+  Future<List<ShopItem>> getPurchases() async {
+    final user = _authService.getCurrentUser()?.uid;
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('Users/$user/purchased').get();
+    final items = snapshot.value as Map<dynamic, dynamic>;
+    List<ShopItem> purchases = [];
+
+    items.forEach((key, value) {
+      final itemData = value as Map<dynamic, dynamic>;
+      purchases.add(
+        ShopItem(
+          image: itemData['image'],
+          coins: itemData['coins'],
+          xp: itemData['xp'],
+          name: itemData['name'],
+          sizeX: itemData['sizeX'],
+          sizeY: itemData['sizeY'],
+          posX: itemData['posX'],
+          posY: itemData['posY'],
+          used: itemData['used'],
+        ),
+      );
+    });
+
+    return purchases;
+  }
+
+  Future<void> updatePurchases(List<ShopItem> purchases) async {
+    try {
+      final user = _authService.getCurrentUser()?.uid;
+      final ref = FirebaseDatabase.instance.ref().child('Users/$user/purchased');
+
+      for (int i = 0; i < purchases.length; i++) {
+        final item = purchases[i];
+        await ref.child(item.name).set({
+          'image': item.image,
+          'coins': item.coins,
+          'xp': item.xp,
+          'name': item.name,
+          'sizeX': item.sizeX,
+          'sizeY': item.sizeY,
+          'posX': item.posX,
+          'posY': item.posY,
+          'used': item.used,
+        });
+      }
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
   Future<bool> checkKeyExistence(String key) async {
     try {
       final user = _authService.getCurrentUser();
       DatabaseReference reference =
           FirebaseDatabase.instance.ref().child('Users').child(user!.uid);
+      DatabaseEvent snapshot = (await reference.once());
+      return snapshot.snapshot.value != null;
+    } on FirebaseException catch (e) {
+      print(e);
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> checkItemExistence(String key) async {
+    try {
+      final user = _authService.getCurrentUser();
+      DatabaseReference reference = FirebaseDatabase.instance
+          .ref()
+          .child('Users')
+          .child(user!.uid)
+          .child('purchased')
+          .child(key);
       DatabaseEvent snapshot = (await reference.once());
       return snapshot.snapshot.value != null;
     } on FirebaseException catch (e) {
@@ -66,7 +180,7 @@ class DatabaseService {
     try {
       final uid = _authService.getCurrentUser()!.uid;
       DatabaseReference buddyRef =
-      FirebaseDatabase.instance.ref().child("Users").child(uid);
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
       await buddyRef.update({"buddy": choice});
     } on FirebaseException catch (e) {
       print(e);
@@ -103,6 +217,19 @@ class DatabaseService {
       print(e);
     }
     return null;
+  }
+
+  Future<void> updateCoins(int coins) async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference xpRef =
+      FirebaseDatabase.instance.ref().child("Users").child(uid);
+      await xpRef.update({"coins": coins});
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<int?> getLevel() async {

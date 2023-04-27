@@ -3,14 +3,18 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/buddy.dart';
+import 'package:study_buddy_app/components/shop_items.dart';
 
-class BuddyGame extends FlameGame with TapDetector {
+class BuddyGame extends FlameGame with TapDetector, PanDetector{
+  DatabaseService databaseService = DatabaseService();
   int buddySelected = UserSettings.buddy;
   SpriteComponent buddy = SpriteComponent();
   SpriteComponent background = SpriteComponent();
   SpriteAnimationComponent buddyAnimation = SpriteAnimationComponent();
+  SpriteAnimationComponent buddyHappyAnimation = SpriteAnimationComponent();
   bool tapEnabled = true;
   int moveCounter = 0;
   static const int MOVE_INTERVAL = 60;
@@ -48,20 +52,39 @@ class BuddyGame extends FlameGame with TapDetector {
     ),
   ];
 
+  List<ShopItem> items = UserSettings.purchased;
+
+
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    databaseService.getPurchases();
 
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")
       ..size = size);
+
+    for (int i = 0; i < items.length; i++){
+
+      SpriteComponent item = SpriteComponent()
+        ..sprite = await loadSprite(items[i].image)
+        ..size = Vector2(items[i].sizeX, items[i].sizeY)
+        ..opacity = items[i].used ? 1 : 0
+        ..y = size.y * items[i].posY
+        ..x = size.x * items[i].posX;
+      add(item);
+    }
+
     buddy
       ..sprite = await loadSprite(buddies[buddySelected].image)
       ..size = buddies[buddySelected].size
       ..y = size.y * 0.35
       ..x = size.x * 0.25;
     add(buddy);
+
   }
+
 
   @override
   Future<void> onTap() async {
@@ -86,8 +109,9 @@ class BuddyGame extends FlameGame with TapDetector {
   }
 
   @override
-  void update(double dt) {
+  Future<void> update(double dt) async {
     super.update(dt);
+
     if (buddyAnimation.isRemoved) {
       buddy.opacity = 1;
       tapEnabled = true;
@@ -96,43 +120,41 @@ class BuddyGame extends FlameGame with TapDetector {
     moveBuddy();
   }
 
-  Future<void> moveBuddy()  async {
-
+  Future<void> moveBuddy() async {
     int steps = 1;
 
     void moveRight() {
-        if (buddy.position.x+steps < size.x*0.48) {
-          buddy.position.x += steps;
-        }
+      if (buddy.position.x + steps < size.x * 0.48) {
+        buddy.position.x += steps;
+      }
     }
 
     void moveLeft() {
-      if (buddy.position.x+steps > 0) {
+      if (buddy.position.x + steps > 0) {
         buddy.position.x -= steps;
       }
     }
 
     void moveUp() {
-      if (buddy.position.y+steps > size.y*0.05) {
+      if (buddy.position.y + steps > size.y * 0.05) {
         buddy.position.y -= steps;
       }
     }
 
-    void moveDown()  {
-      if (buddy.position.y+steps < size.y*0.6) {
+    void moveDown() {
+      if (buddy.position.y + steps < size.y * 0.6) {
         buddy.position.y += steps;
       }
     }
 
-
-    if(moveCounter % MOVE_INTERVAL == 0){
+    if (moveCounter % MOVE_INTERVAL == 0) {
       moveCounter = 0;
       direction = Random().nextInt(8);
       shouldStop = !shouldStop;
     }
 
-    if (shouldStop){
-      switch(direction){
+    if (shouldStop) {
+      switch (direction) {
         case 0:
           moveRight();
           break;
@@ -165,3 +187,7 @@ class BuddyGame extends FlameGame with TapDetector {
     }
   }
 }
+
+
+
+

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
@@ -165,6 +166,8 @@ class BodyState extends State<Body> {
                           UserSettings.xpAmount =
                               (await _databaseService.getXp())!;
                           UserSettings.buddy = (await _databaseService.getBuddy())!;
+                          UserSettings.shop = (await _databaseService.getShop());
+                          UserSettings.purchased = (await _databaseService.getPurchases());
                           if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
@@ -244,13 +247,16 @@ class BodyState extends State<Body> {
                   iconSrc: "assets/icons/google.svg",
                   press: () async {
                     await _authService.signInWithGoogle();
-                    await _databaseService.importData();
+                    _databaseService.importData();
+                    await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
                     int lvl = await _databaseService
                         .getLvl((await _databaseService.getXp())!);
                     _databaseService.updateLevel(lvl);
                     UserSettings.level = lvl;
                     UserSettings.xpAmount = (await _databaseService.getXp())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
+                    UserSettings.purchased = (await _databaseService.getPurchases());
+                    UserSettings.shop = (await _databaseService.getShop());
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
