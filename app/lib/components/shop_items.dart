@@ -7,8 +7,8 @@ class ShopItem{
   bool used;
   final double sizeX;
   final double sizeY;
-  final double posX;
-  final double posY;
+  double posX;
+  double posY;
 
   ShopItem({
     required this.sizeX,
