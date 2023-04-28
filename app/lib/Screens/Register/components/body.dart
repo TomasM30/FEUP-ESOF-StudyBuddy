@@ -205,6 +205,7 @@ class BodyState extends State<Body> {
                     (await _databaseService.getCoins())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
                     UserSettings.purchased = (await _databaseService.getPurchases());
+                    UserSettings.sessions = (await _databaseService.loadSessions());
                     UserSettings.shop = (await _databaseService.getShop());
                     if (!mounted) return;
                     Navigator.pushReplacement(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:intl/intl.dart';
 
@@ -112,6 +113,8 @@ class BodyState extends State<Body> {
                       UserSettings.level = lvl;
                       audioPlayer.pause();
                       UserSettings.music = false;
+                      _databaseService.setLastSession();
+                      UserSettings.sessions = await _databaseService.loadSessions();
                       if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
@@ -174,7 +177,7 @@ class BodyState extends State<Body> {
   addTime() {
     const addSeconds = 1;
 
-    setState(() {
+    setState(()  {
       final seconds = duration.inSeconds + addSeconds;
 
       if (duration.inHours == 1 &&
@@ -196,6 +199,7 @@ class BodyState extends State<Body> {
         xpAmount = xpAmount + 2;
         coinsAmount+=4;
       }
+      UserSettings.duration = duration.inSeconds;
       _databaseService.updateXp(xpAmount);
       _databaseService.updateCoins(coinsAmount);
       duration = Duration(seconds: seconds);

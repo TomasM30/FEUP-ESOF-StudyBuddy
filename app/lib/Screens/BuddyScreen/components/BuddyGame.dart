@@ -60,7 +60,6 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   Future<void> onLoad() async {
     super.onLoad();
     databaseService.getPurchases();
-
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")
       ..size = size);
@@ -97,6 +96,9 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
     int j = 0;
     for(int i = 0; i < components.length; i++){
       final spriteComponent = components[i];
+      if(!items[i].used){
+        continue;
+      }
       if(taplocation.x >= spriteComponent.x-75 && taplocation.x <= spriteComponent.x+75 && taplocation.y >= spriteComponent.y-75 && taplocation.y <= spriteComponent.y+75){
         counter++;
         spriteComponentobject = spriteComponent;
@@ -146,6 +148,12 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   @override
   Future<void> update(double dt) async {
     super.update(dt);
+    /*if (UserSettings.sessions.isNotEmpty) {
+      if((int.parse(UserSettings.sessions[UserSettings.sessions.length-1].day) - DateTime.now().day).abs() > 7){
+        buddy.opacity = 0;
+      }
+    }*/
+
 
     if (buddyAnimation.isRemoved) {
       buddy.opacity = 1;
