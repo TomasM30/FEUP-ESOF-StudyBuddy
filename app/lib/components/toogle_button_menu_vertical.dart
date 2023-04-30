@@ -6,10 +6,12 @@ class MenuButtonV extends StatefulWidget {
   final String iconSrc2;
   final String iconSrc3;
   final String iconSrc4;
+  final String iconSrc5;
   final double width;
   final VoidCallback? press2;
   final VoidCallback? press3;
   final VoidCallback? press4;
+  final VoidCallback? press5;
 
   const MenuButtonV({
     Key? key,
@@ -17,10 +19,12 @@ class MenuButtonV extends StatefulWidget {
     required this.iconSrc2,
     required this.iconSrc3,
     required this.iconSrc4,
+    required this.iconSrc5,
     this.width = 60,
     this.press2,
     this.press3,
     this.press4,
+    this.press5,
   }) : super(key: key);
 
   @override
@@ -75,6 +79,14 @@ class MenuButtonVState extends State<MenuButtonV> {
                 width: widget.width,
                 iconSrc: widget.iconSrc4,
                 press: widget.press4,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              CustomButtons(
+                width: widget.width,
+                iconSrc: widget.iconSrc5,
+                press: widget.press5,
               ),
             ],
           ),
