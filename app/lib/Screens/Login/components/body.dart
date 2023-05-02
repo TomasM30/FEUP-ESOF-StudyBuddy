@@ -165,9 +165,12 @@ class BodyState extends State<Body> {
                           UserSettings.level = lvl;
                           UserSettings.xpAmount =
                               (await _databaseService.getXp())!;
+                          UserSettings.coinsAmount =
+                              (await _databaseService.getCoins())!;
                           UserSettings.buddy = (await _databaseService.getBuddy())!;
                           UserSettings.shop = (await _databaseService.getShop());
                           UserSettings.purchased = (await _databaseService.getPurchases());
+                          UserSettings.sessions = (await _databaseService.loadSessions());
                           if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
@@ -254,9 +257,12 @@ class BodyState extends State<Body> {
                     _databaseService.updateLevel(lvl);
                     UserSettings.level = lvl;
                     UserSettings.xpAmount = (await _databaseService.getXp())!;
+                    UserSettings.coinsAmount =
+                    (await _databaseService.getCoins())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
                     UserSettings.purchased = (await _databaseService.getPurchases());
                     UserSettings.shop = (await _databaseService.getShop());
+                    UserSettings.sessions = (await _databaseService.loadSessions());
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

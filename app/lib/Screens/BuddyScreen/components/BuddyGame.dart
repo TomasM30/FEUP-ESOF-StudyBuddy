@@ -3,13 +3,15 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/gestures.dart';
 import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/buddy.dart';
 import 'package:study_buddy_app/components/shop_items.dart';
 
-class BuddyGame extends FlameGame with TapDetector, PanDetector{
+class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   DatabaseService databaseService = DatabaseService();
+  List<SpriteComponent> components = [];
   int buddySelected = UserSettings.buddy;
   SpriteComponent buddy = SpriteComponent();
   SpriteComponent background = SpriteComponent();
@@ -54,25 +56,22 @@ class BuddyGame extends FlameGame with TapDetector, PanDetector{
 
   List<ShopItem> items = UserSettings.purchased;
 
-
-
   @override
   Future<void> onLoad() async {
     super.onLoad();
     databaseService.getPurchases();
-
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")
       ..size = size);
 
-    for (int i = 0; i < items.length; i++){
-
+    for (int i = 0; i < items.length; i++) {
       SpriteComponent item = SpriteComponent()
         ..sprite = await loadSprite(items[i].image)
         ..size = Vector2(items[i].sizeX, items[i].sizeY)
         ..opacity = items[i].used ? 1 : 0
         ..y = size.y * items[i].posY
         ..x = size.x * items[i].posX;
+      components.add(item);
       add(item);
     }
 
@@ -82,12 +81,50 @@ class BuddyGame extends FlameGame with TapDetector, PanDetector{
       ..y = size.y * 0.35
       ..x = size.x * 0.25;
     add(buddy);
-
   }
 
+  @override
+  void onTapUp (TapUpInfo info)  {
+    super.onTapUp(info);
+    int counter = 0;
+    SpriteComponent spriteComponentobject = components[0];
+    final taplocation = info.eventPosition.game;
+    bool poschanged = false;
+    bool found = false;
+    double posx = taplocation.x;
+    double posy = taplocation.y;
+    int j = 0;
+    for(int i = 0; i < components.length; i++){
+      final spriteComponent = components[i];
+      if(!items[i].used){
+        continue;
+      }
+      if(taplocation.x >= spriteComponent.x-75 && taplocation.x <= spriteComponent.x+75 && taplocation.y >= spriteComponent.y-75 && taplocation.y <= spriteComponent.y+75){
+        counter++;
+        spriteComponentobject = spriteComponent;
+        found = true;
+        j = i;
+      }
+      if (found){
+        poschanged = true;
+        posx = taplocation.x;
+        posy = taplocation.y;
+        found = false;
+      }
+    }
+    if (counter > 0 && poschanged){
+      spriteComponentobject.x = posx;
+      spriteComponentobject.y = posy;
+      items[j].posX = posx/size.x;
+      items[j].posY = posy/size.y;
+      databaseService.updatePurchases(items);
+      counter = 0;
+      poschanged = false;
+    }
+  }
 
   @override
-  Future<void> onTap() async {
+  Future<void> onDoubleTap() async {
     if (!tapEnabled) {
       return;
     }
@@ -111,11 +148,18 @@ class BuddyGame extends FlameGame with TapDetector, PanDetector{
   @override
   Future<void> update(double dt) async {
     super.update(dt);
+    /*if (UserSettings.sessions.isNotEmpty) {
+      if((int.parse(UserSettings.sessions[UserSettings.sessions.length-1].day) - DateTime.now().day).abs() > 7){
+        buddy.opacity = 0;
+      }
+    }*/
+
 
     if (buddyAnimation.isRemoved) {
       buddy.opacity = 1;
       tapEnabled = true;
     }
+
     moveCounter++;
     moveBuddy();
   }
@@ -187,7 +231,3 @@ class BuddyGame extends FlameGame with TapDetector, PanDetector{
     }
   }
 }
-
-
-
-

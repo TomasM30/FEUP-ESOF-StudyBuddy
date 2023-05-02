@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:study_buddy_app/Services/auth.dart';
+import 'package:study_buddy_app/Services/user_setting.dart';
+import 'package:study_buddy_app/components/sessions.dart';
 import 'package:study_buddy_app/components/shop_items.dart';
 
 class DatabaseService {
@@ -24,16 +26,16 @@ class DatabaseService {
         'streak': 0,
         'buddy': 0,
         'purchased': {
-          'Flower': {
-            'image': 'Teresa.png',
+          'Basil': {
+            'image': 'Manjerico.png',
             'coins': 0,
             'xp': 0,
-            'name': 'Flower',
-            'used': true,
+            'name': 'Basil',
+            'used': false,
             'sizeX': 100.01,
             'sizeY': 100.01,
-            'posX': 0.1,
-            'posY': 0.3,
+            'posX': 0.05,
+            'posY': 0.12,
           },
         },
       };
@@ -45,15 +47,99 @@ class DatabaseService {
     }
   }
 
+  Future<List<Session>> loadSessions() async {
+    List<Session> sessions = [];
+
+    if (await checkSessionExistence()) {
+      final ref = FirebaseDatabase.instance.ref();
+      final uid = _authService.getCurrentUser()!.uid;
+      final snapshot = await ref.child('Users/$uid/sessions').get();
+      final items = snapshot.value as Map<dynamic, dynamic>;
+
+      items.forEach((key, value) {
+        final itemData = value as Map<dynamic, dynamic>;
+
+        sessions.add(
+          Session(
+            hour: itemData['hour'],
+            day: itemData['day'],
+            duration: itemData['duration'],
+            minute: itemData['minute'],
+            month: itemData['month'],
+            seconds: itemData['seconds'],
+            year: itemData['year'],
+          ),
+        );
+      });
+
+      sessions.sort((a, b) {
+        final dateA = DateTime(
+          int.parse(a.year),
+          int.parse(a.month),
+          int.parse(a.day),
+          int.parse(a.hour),
+          int.parse(a.minute),
+          int.parse(a.seconds),
+        );
+
+        final dateB = DateTime(
+          int.parse(b.year),
+          int.parse(b.month),
+          int.parse(b.day),
+          int.parse(b.hour),
+          int.parse(b.minute),
+          int.parse(b.seconds),
+        );
+
+        return dateA.compareTo(dateB);
+      });
+    }
+
+    return sessions;
+  }
+
+  Future<void> setLastSession() async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference sessionsRef = FirebaseDatabase.instance
+          .ref()
+          .child("Users")
+          .child(uid)
+          .child('sessions');
+      final now = DateTime.now();
+      final session = Session(
+          hour: now.hour.toString(),
+          day: now.day.toString(),
+          duration: UserSettings.duration.toString(),
+          minute: now.minute.toString(),
+          month: now.month.toString(),
+          year: now.year.toString(),
+          seconds: now.second.toString());
+      await sessionsRef.push().set({
+        'hour': session.hour,
+        'day': session.day,
+        'duration': session.duration,
+        'minute': session.minute,
+        'month': session.month,
+        'year': session.year,
+        'seconds': session.seconds,
+      });
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<List<ShopItem>> getShop() async {
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref.child('Shop').get();
     final items = snapshot.value as Map<dynamic, dynamic>;
-    List<ShopItem> purchases = [];
+    List<ShopItem> shop = [];
 
     items.forEach((key, value) {
       final itemData = value as Map<dynamic, dynamic>;
-      purchases.add(
+      shop.add(
         ShopItem(
           image: itemData['image'],
           coins: itemData['coins'],
@@ -67,7 +153,8 @@ class DatabaseService {
       );
     });
 
-    return purchases;
+    shop.sort((a, b) => a.xp.compareTo(b.xp));
+    return shop;
   }
 
   Future<List<ShopItem>> getPurchases() async {
@@ -100,7 +187,8 @@ class DatabaseService {
   Future<void> updatePurchases(List<ShopItem> purchases) async {
     try {
       final user = _authService.getCurrentUser()?.uid;
-      final ref = FirebaseDatabase.instance.ref().child('Users/$user/purchased');
+      final ref =
+          FirebaseDatabase.instance.ref().child('Users/$user/purchased');
 
       for (int i = 0; i < purchases.length; i++) {
         final item = purchases[i];
@@ -123,7 +211,21 @@ class DatabaseService {
     }
   }
 
-
+  Future<bool> checkSessionExistence() async {
+    try {
+      final user = _authService.getCurrentUser();
+      DatabaseReference reference =
+      FirebaseDatabase.instance.ref().child('Users').child(user!.uid).child("sessions");
+      DatabaseEvent snapshot = (await reference.once());
+      return snapshot.snapshot.value != null;
+    } on FirebaseException catch (e) {
+      print(e);
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
   Future<bool> checkKeyExistence(String key) async {
     try {
@@ -223,7 +325,7 @@ class DatabaseService {
     try {
       final uid = _authService.getCurrentUser()!.uid;
       DatabaseReference xpRef =
-      FirebaseDatabase.instance.ref().child("Users").child(uid);
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
       await xpRef.update({"coins": coins});
     } on FirebaseException catch (e) {
       print(e);
@@ -280,9 +382,7 @@ class DatabaseService {
   }
 
   int getNextLvlXp(int lvl) {
-    int xp = pow(e,
-            (pow(e, ((log(44640)) / 19)) * (lvl) - pow(e, ((log(44640)) / 19))))
-        .floor();
+    int xp = pow(e, ((log(44640) * (lvl)) / 19)).floor();
     return xp;
   }
 }

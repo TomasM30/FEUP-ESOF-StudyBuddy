@@ -195,13 +195,17 @@ class BodyState extends State<Body> {
                   press: () async {
                     await _authService.signInWithGoogle();
                     await _databaseService.importData();
+                    await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
                     int lvl = await _databaseService
                         .getLvl((await _databaseService.getXp())!);
                     _databaseService.updateLevel(lvl);
                     UserSettings.level = lvl;
                     UserSettings.xpAmount = (await _databaseService.getXp())!;
+                    UserSettings.coinsAmount =
+                    (await _databaseService.getCoins())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
                     UserSettings.purchased = (await _databaseService.getPurchases());
+                    UserSettings.sessions = (await _databaseService.loadSessions());
                     UserSettings.shop = (await _databaseService.getShop());
                     if (!mounted) return;
                     Navigator.pushReplacement(
