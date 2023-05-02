@@ -10,6 +10,7 @@ class MenuButtonH extends StatefulWidget {
   final VoidCallback? press2;
   final VoidCallback? press3;
   final VoidCallback? press4;
+  final VoidCallback? press;
 
   const MenuButtonH({
     Key? key,
@@ -21,6 +22,7 @@ class MenuButtonH extends StatefulWidget {
     this.press3,
     required this.iconSrc4,
     this.press4,
+    this.press,
   }) : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class MenuButtonHState extends State<MenuButtonH> {
           iconSrc: widget.iconSrc1,
           press: () {
             _toggleShowButtons();
+            widget.press!();
           },
         ),
         SizedBox(

@@ -65,3 +65,15 @@ class HaveThen extends Then1WithWorld<String, FlutterWorld> {
   @override
   RegExp get pattern => RegExp(r'I have {string}');
 }
+
+class InTheGame extends ThenWithWorld<FlutterWorld> {
+  @override
+  Future<void> executeStep() async {
+    final quatroFinder = find.byValueKey("quatro");
+    await FlutterDriverUtils.isPresent(world.driver, quatroFinder);
+  }
+
+  @override
+  RegExp get pattern => RegExp(r'I am in the game');
+}
+

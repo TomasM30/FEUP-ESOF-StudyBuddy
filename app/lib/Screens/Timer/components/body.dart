@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
+import 'package:study_buddy_app/components/sessions.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_horizontal.dart';
 
 import 'background.dart';
@@ -19,13 +22,18 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
+  bool clicked = false;
   int xpAmount = UserSettings.xpAmount;
+  int coinsAmount = UserSettings.coinsAmount;
+  int auxXp = UserSettings.xpAmount;
+  int auxCoins = UserSettings.coinsAmount;
   final DatabaseService _databaseService = DatabaseService();
   Duration duration = Duration();
   Timer? timer;
   DateTime timeNow = DateTime.now();
   final audioPlayer = AudioPlayer();
   bool isFirstHour = true;
+  double multiplier = UserSettings.multiplier;
 
   Future setAudio() async {
     const url =
@@ -95,20 +103,52 @@ class BodyState extends State<Body> {
         body: Background(
           child: Stack(
             children: [
+              Visibility(
+                visible: UserSettings.streak > 1 && !clicked,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      children:[
+                        SvgPicture.asset(
+                          "assets/images/streak1.svg",
+                          width: 100,
+                        ),
+                      ]
+                    ),
+                  ),
+                ),
+              ),
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15, left: 8),
                   child: MenuButtonH(
+                    press: () {
+                      setState(() {
+                        clicked = !clicked;
+                      });
+                    },
                     press4: () async {
-                      _databaseService.updateXp(xpAmount);
+                      _databaseService.setLastSession();
+                      UserSettings.sessions =
+                          await _databaseService.loadSessions();
+                      Future.delayed(Duration(seconds: 2));
+                      _databaseService.streakBuild();
+                      _databaseService
+                          .updateCoins((coinsAmount * multiplier).round());
+                      _databaseService
+                          .updateXp((xpAmount * multiplier).round());
                       UserSettings.xpAmount = xpAmount;
+                      UserSettings.coinsAmount = coinsAmount;
                       int lvl = await _databaseService
                           .getLvl((await _databaseService.getXp())!);
                       _databaseService.updateLevel(lvl);
                       UserSettings.level = lvl;
                       audioPlayer.pause();
                       UserSettings.music = false;
+
                       if (!mounted) return;
                       Navigator.pushReplacement(
                         context,
@@ -188,8 +228,19 @@ class BodyState extends State<Body> {
               duration.inSeconds % 60 == 0 &&
               duration.inSeconds != 0)) {
         xpAmount++;
+        coinsAmount += 4;
       } else if (!isFirstHour) {
         xpAmount = xpAmount + 2;
+        coinsAmount += 4;
+      }
+      UserSettings.duration = duration.inSeconds;
+      if (auxCoins != coinsAmount) {
+        _databaseService.updateCoins((multiplier * coinsAmount).round());
+        auxCoins = coinsAmount;
+      }
+      if (auxXp != xpAmount) {
+        _databaseService.updateXp((multiplier * xpAmount).round());
+        auxXp = xpAmount;
       }
       _databaseService.updateXp(xpAmount);
       duration = Duration(seconds: seconds);
