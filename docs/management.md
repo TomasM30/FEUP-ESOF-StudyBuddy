@@ -64,3 +64,35 @@
 
  ## Release
   * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.2.0)
+
+
+# Third Iteration
+
+## Start of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i3s.png">
+
+## End of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i3e.png">
+
+<br>
+
+## The 4 questions
+
+### What went well?
+ * The buddy movement logic was easier than we thought initially
+
+### What didn't go so well?
+ * Our teamwork definitely needs improovement, we will certainly work on that this iteration
+ * We couldn't complete the iteration plans due to this
+
+### What have we learned?
+ * How to use Flame library
+ * How to use the Table Calendar library
+
+### What still puzzles me?
+ * How to effectively time manage our iteration issues to be able to fully complete our plans
+ * How to manage our teamwork in a way that it helps with our workflow as a group
+ * How to bulletproof the streak mechanic from cheating
+
+ ## Release
+  * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.3.0)
