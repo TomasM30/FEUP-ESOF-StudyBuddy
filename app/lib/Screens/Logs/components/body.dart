@@ -18,82 +18,86 @@ class BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Background(
-      child: TableCalendar(
-        firstDay: DateTime.utc(2023, 4, 1),
-        lastDay: DateTime.now().add(Duration(days: 365)),
-        focusedDay: _focusedDay,
-        locale: 'en_US',
+      child:Container(margin: EdgeInsets.only(top: 70),
+        child: TableCalendar(
+          firstDay: DateTime.utc(2023, 4, 1),
+          lastDay: DateTime.now().add(Duration(days: 365)),
+          focusedDay: _focusedDay,
+          daysOfWeekVisible: false,
+          locale: 'en_US',
 
-        headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 40,
-            fontFamily: 'Wishes',
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 40,
+              fontFamily: 'Wishes',
+            ),
+            leftChevronVisible: false,
+            rightChevronVisible: false,
+            
           ),
-          leftChevronVisible: false,
-          rightChevronVisible: false,
+
+          calendarStyle: CalendarStyle(
+            defaultTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Wishes',
+            ),
+            weekendTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Wishes',
+            ),
+            holidayTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Wishes',
+            ),
+            outsideTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Wishes',
+            ),
+            outsideDaysVisible: false,
+            weekendDecoration: BoxDecoration(
+              color: Colors.transparent,
+            ),
+            holidayDecoration: BoxDecoration(
+              color: Colors.transparent,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            todayDecoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),        
+
+          selectedDayPredicate: (day){
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: (selectedDay, focusedDay){
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+
+          },
+          
         ),
-
-        calendarStyle: CalendarStyle(
-          defaultTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontFamily: 'Wishes',
-          ),
-          weekendTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontFamily: 'Wishes',
-          ),
-          holidayTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontFamily: 'Wishes',
-          ),
-          outsideTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontFamily: 'Wishes',
-          ),
-          outsideDaysVisible: false,
-          weekendDecoration: BoxDecoration(
-            color: Colors.transparent,
-          ),
-          holidayDecoration: BoxDecoration(
-            color: Colors.transparent,
-          ),
-          selectedDecoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-              color: Colors.white,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          todayDecoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-              color: Colors.white,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),        
-
-        selectedDayPredicate: (day){
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay){
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-
-        },
-        
-      ),
+      )
     );
   }
 }
