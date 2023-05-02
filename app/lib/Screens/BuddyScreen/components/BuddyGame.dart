@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -59,6 +60,10 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    print(UserSettings.streak);
+    print(UserSettings.multiplier);
+    print(UserSettings.lastLogIn);
+
     databaseService.getPurchases();
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")
@@ -153,6 +158,8 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
         buddy.opacity = 0;
       }
     }*/
+
+
 
 
     if (buddyAnimation.isRemoved) {

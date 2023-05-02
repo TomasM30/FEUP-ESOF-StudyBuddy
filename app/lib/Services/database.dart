@@ -23,8 +23,13 @@ class DatabaseService {
         'xp': 1,
         'level': 1,
         'coins': 0,
-        'streak': 0,
+        'streak': 1,
         'buddy': 0,
+        'lastLogIn': DateTime.now().day.toString() +
+            '/' +
+            DateTime.now().month.toString() +
+            '/' +
+            DateTime.now().year.toString(),
         'purchased': {
           'Basil': {
             'image': 'Manjerico.png',
@@ -40,6 +45,34 @@ class DatabaseService {
         },
       };
       FirebaseDatabase.instance.ref().child("Users").child(user.uid).set(data);
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<int?> getStreak() async {
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('Users/$userId/streak').get();
+      final streak = snapshot.value as int?;
+      return streak;
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<void> updateStreak(int streak) async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference streakRef =
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
+      await streakRef.update({"streak": streak});
     } on FirebaseException catch (e) {
       print(e);
     } catch (e) {
@@ -214,8 +247,11 @@ class DatabaseService {
   Future<bool> checkSessionExistence() async {
     try {
       final user = _authService.getCurrentUser();
-      DatabaseReference reference =
-      FirebaseDatabase.instance.ref().child('Users').child(user!.uid).child("sessions");
+      DatabaseReference reference = FirebaseDatabase.instance
+          .ref()
+          .child('Users')
+          .child(user!.uid)
+          .child("sessions");
       DatabaseEvent snapshot = (await reference.once());
       return snapshot.snapshot.value != null;
     } on FirebaseException catch (e) {
@@ -384,5 +420,111 @@ class DatabaseService {
   int getNextLvlXp(int lvl) {
     int xp = pow(e, ((log(44640) * (lvl)) / 19)).floor();
     return xp;
+  }
+
+  Future<void> updateLastLogin(String date) async {
+    try {
+      final uid = _authService.getCurrentUser()!.uid;
+      DatabaseReference xpRef =
+          FirebaseDatabase.instance.ref().child("Users").child(uid);
+      await xpRef.update({"lastLogIn": date});
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> getLastLogIn() async {
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child('Users/$userId/lastLogIn').get();
+      final date = snapshot.value;
+      return date.toString();
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+    return "";
+  }
+
+  void streakBuild() {
+
+    int length = UserSettings.sessions.length;
+    List<Session> sessions = UserSettings.sessions;
+    bool duration = false;
+    if (sessions.isNotEmpty) {
+      if (int.parse(sessions[length - 1].duration) > 1800) {
+        duration = true;
+      }
+    }
+    if (duration && sessions.length>=2 &&
+        (UserSettings.lastLogIn !=
+            (DateTime.now().day.toString() +
+                '/' +
+                DateTime.now().month.toString() +
+                '/' +
+                DateTime.now().year.toString()))) {
+      if (((((int.parse(sessions[length - 1].day) - DateTime.now().day).abs() ==
+                  1) &&
+              (int.parse(sessions[length - 1].month) == DateTime.now().month) &&
+              (int.parse(sessions[length - 1].year) == DateTime.now().year)) ||
+          ((int.parse(sessions[length - 1].day) == 1) &&
+                  DateTime.now().day == 31) &&
+              (int.parse(sessions[length - 1].month) == 1) &&
+              (DateTime.now().month == 12) &&
+              (int.parse(sessions[length - 1].year) ==
+                  (DateTime.now().year + 1)) ||
+          ((int.parse(
+                          sessions[length - 1].day) ==
+                      1) &&
+                  ((int.parse(sessions[length - 1].month) -
+                              DateTime.now().month)
+                          .abs() ==
+                      1) &&
+                  (DateTime.now().day == 31)) &&
+              (((int.parse(sessions[length - 1].day) == 29  && (int.parse(sessions[length - 1].year)) % 4 == 0) || int.parse(sessions[length - 1].day) == 28) &&
+                  (int.parse(sessions[length - 1].month) == 2) &&
+                  (DateTime.now().day == 1) &&
+                  (DateTime.now().month == 3)))) {
+        if (UserSettings.streak < 7) {
+          UserSettings.streak++;
+          updateStreak(UserSettings.streak);
+          switch (UserSettings.streak) {
+            case 1:
+              UserSettings.multiplier = 1;
+              break;
+            case 2:
+              UserSettings.multiplier = 1.17;
+              break;
+            case 3:
+              UserSettings.multiplier = 1.34;
+              break;
+            case 4:
+              UserSettings.multiplier = 1.51;
+              break;
+            case 5:
+              UserSettings.multiplier = 1.68;
+              break;
+            case 6:
+              UserSettings.multiplier = 1.85;
+              break;
+            case 7:
+              UserSettings.multiplier = 2;
+              break;
+          }
+        } else {
+          UserSettings.streak = 7;
+          updateStreak(UserSettings.streak);
+          UserSettings.multiplier = 2;
+        }
+      } else {
+        UserSettings.streak = 1;
+        UserSettings.multiplier = 1;
+        updateStreak(UserSettings.streak);
+      }
+    }
   }
 }
