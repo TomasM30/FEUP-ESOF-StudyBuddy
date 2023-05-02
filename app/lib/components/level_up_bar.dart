@@ -16,9 +16,6 @@ class LevelUpBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double progress = currentXp / nextLevelXp;
-    if (currentLevel == 20){
-      progress = 1;
-    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
