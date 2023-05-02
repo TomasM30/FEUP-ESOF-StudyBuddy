@@ -128,7 +128,8 @@ class BodyState extends State<Body> {
           child: Padding(
             padding: const EdgeInsets.only(top: 15, right: 8),
             child: MenuButtonV(
-              press2: () {
+              press2: () async {
+                UserSettings.streak = (await _databaseService.getStreak())!;
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -169,4 +170,5 @@ class BodyState extends State<Body> {
       ],
     );
   }
+
 }

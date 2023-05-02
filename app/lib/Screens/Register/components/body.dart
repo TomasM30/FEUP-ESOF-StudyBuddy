@@ -196,6 +196,8 @@ class BodyState extends State<Body> {
                     await _authService.signInWithGoogle();
                     await _databaseService.importData();
                     await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
+                    _databaseService.importData();
+                    await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
                     int lvl = await _databaseService
                         .getLvl((await _databaseService.getXp())!);
                     _databaseService.updateLevel(lvl);
@@ -205,8 +207,16 @@ class BodyState extends State<Body> {
                     (await _databaseService.getCoins())!;
                     UserSettings.buddy = (await _databaseService.getBuddy())!;
                     UserSettings.purchased = (await _databaseService.getPurchases());
-                    UserSettings.sessions = (await _databaseService.loadSessions());
                     UserSettings.shop = (await _databaseService.getShop());
+                    UserSettings.sessions = (await _databaseService.loadSessions());
+                    UserSettings.streak = (await _databaseService.getStreak())!;
+                    UserSettings.lastLogIn = (await _databaseService.getLastLogIn());
+                    _databaseService.updateLastLogin(DateTime.now().day.toString() +
+                        '/' +
+                        DateTime.now().month.toString() +
+                        '/' +
+                        DateTime.now().year.toString());
+                    _databaseService.streakBuild();
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

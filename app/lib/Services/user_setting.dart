@@ -2,6 +2,9 @@ import 'package:study_buddy_app/components/sessions.dart';
 import 'package:study_buddy_app/components/shop_items.dart';
 
 class UserSettings {
+  static String lastLogIn = "";
+  static double multiplier = 1;
+  static int streak = 1;
   static int xpAmount = 0;
   static int coinsAmount = 0;
   static int duration = 0;
