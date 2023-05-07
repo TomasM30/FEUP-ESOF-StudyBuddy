@@ -11,6 +11,128 @@ import 'package:study_buddy_app/components/shop_items.dart';
 class DatabaseService {
   final AuthService _authService = AuthService();
 
+  Future<void> importShop() async {
+    try {
+      final data = {
+          'Basil': {
+            'image': 'Manjerico.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Basil',
+            'sizeX': 100.01,
+            'sizeY': 100.01,
+            'posX': 0.05,
+            'posY': 0.12,
+          },
+          'Food Bowl': {
+            'image': 'Food_Bowl.png',
+            'coins': 30,
+            'xp': 15,
+            'name': 'Food Bowl',
+            'sizeX': 100.0001,
+            'sizeY': 62.0001,
+            'posX': 0.05,
+            'posY': 0.12,
+          },
+          'Aquarium': {
+            'image': 'Aquarium.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Aquarium',
+            'sizeX': 100.0001,
+            'sizeY': 79.0001,
+            'posX': 0.06,
+            'posY': 0.12,
+          },
+          'Basket': {
+            'image': 'basket.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Basket',
+            'sizeX': 100.0001,
+            'sizeY': 70.0001,
+            'posX': 0.07,
+            'posY': 0.12,
+          },
+          'Fireplace': {
+            'image': 'fireplace.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Fireplace',
+            'sizeX': 100.0001,
+            'sizeY': 130.0001,
+            'posX': 0.08,
+            'posY': 0.12,
+          },
+          'GameSquare': {
+            'image': 'GameSquare.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'GameSquare',
+            'sizeX': 100.0001,
+            'sizeY': 85.0001,
+            'posX': 0.09,
+            'posY': 0.12,
+          },
+          'Puff': {
+            'image': 'Puff.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Puff',
+            'sizeX': 100.0001,
+            'sizeY': 98.0001,
+            'posX': 0.1,
+            'posY': 0.12,
+          },
+          'Shovel': {
+            'image': 'Shovel.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Shovel',
+            'sizeX': 100.0001,
+            'sizeY': 252.0001,
+            'posX': 0.12,
+            'posY': 0.12,
+          },
+          'Stone': {
+            'image': 'stone.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Stone',
+            'sizeX': 100.0001,
+            'sizeY': 62.0001,
+            'posX': 0.05,
+            'posY': 0.12,
+          },
+          'TV': {
+            'image': 'tv.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'TV',
+            'sizeX': 100.0001,
+            'sizeY': 123.0001,
+            'posX': 0.13,
+            'posY': 0.12,
+          },
+          'Watering Can': {
+            'image': 'wateringCan.png',
+            'coins': 0,
+            'xp': 0,
+            'name': 'Watering Can',
+            'sizeX': 100.0001,
+            'sizeY': 67.0001,
+            'posX': 0.13,
+            'posY': 0.12,
+          },
+      };
+      FirebaseDatabase.instance.ref().child('Shop').set(data);
+    } on FirebaseException catch (e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> importData() async {
     try {
       final user = _authService.getCurrentUser();
@@ -450,7 +572,25 @@ class DatabaseService {
     return "";
   }
 
-  void streakBuild() {
+  Future<void> buildData() async {
+    UserSettings settings = UserSettings();
+    settings.clearUserSettings();
+    int lvl = await getLvl((await getXp())!);
+    updateLevel(lvl);
+    UserSettings.level = lvl;
+    UserSettings.xpAmount = (await getXp())!;
+    UserSettings.coinsAmount =
+    (await getCoins())!;
+    UserSettings.buddy = (await getBuddy())!;
+    UserSettings.purchased = (await getPurchases());
+    UserSettings.shop = (await getShop());
+    UserSettings.sessions = (await loadSessions());
+    UserSettings.streak = (await getStreak())!;
+    UserSettings.lastLogIn = (await getLastLogIn());
+    Future.delayed(Duration(seconds: 1));
+  }
+
+  Future<void> streakBuild() async {
 
     int length = UserSettings.sessions.length;
     List<Session> sessions = UserSettings.sessions;
@@ -460,35 +600,14 @@ class DatabaseService {
         duration = true;
       }
     }
-    if (duration && sessions.length>=2 &&
-        (UserSettings.lastLogIn !=
-            (DateTime.now().day.toString() +
-                '/' +
-                DateTime.now().month.toString() +
-                '/' +
-                DateTime.now().year.toString()))) {
-      if (((((int.parse(sessions[length - 1].day) - DateTime.now().day).abs() ==
-                  1) &&
-              (int.parse(sessions[length - 1].month) == DateTime.now().month) &&
-              (int.parse(sessions[length - 1].year) == DateTime.now().year)) ||
-          ((int.parse(sessions[length - 1].day) == 1) &&
-                  DateTime.now().day == 31) &&
-              (int.parse(sessions[length - 1].month) == 1) &&
-              (DateTime.now().month == 12) &&
-              (int.parse(sessions[length - 1].year) ==
-                  (DateTime.now().year + 1)) ||
-          ((int.parse(
-                          sessions[length - 1].day) ==
-                      1) &&
-                  ((int.parse(sessions[length - 1].month) -
-                              DateTime.now().month)
-                          .abs() ==
-                      1) &&
-                  (DateTime.now().day == 31)) &&
-              (((int.parse(sessions[length - 1].day) == 29  && (int.parse(sessions[length - 1].year)) % 4 == 0) || int.parse(sessions[length - 1].day) == 28) &&
-                  (int.parse(sessions[length - 1].month) == 2) &&
-                  (DateTime.now().day == 1) &&
-                  (DateTime.now().month == 3)))) {
+    print(sessions.isNotEmpty);
+    print(UserSettings.lastLogIn);
+    print(DateTime.now().day.toString() + '/' + DateTime.now().month.toString() + '/' + DateTime.now().year.toString());
+    sessions.isNotEmpty ? print((int.parse(sessions[length-1].day) - DateTime.now().day).abs() == 1) : print('empty');
+
+    if (/*duration && */sessions.isNotEmpty &&
+        (UserSettings.lastLogIn != (DateTime.now().day.toString() + '/' + DateTime.now().month.toString() + '/' + DateTime.now().year.toString()))) {
+      if ((int.parse(sessions[length-1].day) - DateTime.now().day).abs() == 1) {
         if (UserSettings.streak < 7) {
           UserSettings.streak++;
           updateStreak(UserSettings.streak);
@@ -516,7 +635,7 @@ class DatabaseService {
               break;
           }
         } else {
-          UserSettings.streak = 7;
+          UserSettings.streak ++;
           updateStreak(UserSettings.streak);
           UserSettings.multiplier = 2;
         }

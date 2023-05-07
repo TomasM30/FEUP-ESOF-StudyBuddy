@@ -160,25 +160,12 @@ class BodyState extends State<Body> {
                         } else {
                           _databaseService.importData();
                           await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
-                          int lvl = await _databaseService
-                              .getLvl((await _databaseService.getXp())!);
-                          _databaseService.updateLevel(lvl);
-                          UserSettings.level = lvl;
-                          UserSettings.xpAmount = (await _databaseService.getXp())!;
-                          UserSettings.coinsAmount =
-                          (await _databaseService.getCoins())!;
-                          UserSettings.buddy = (await _databaseService.getBuddy())!;
-                          UserSettings.purchased = (await _databaseService.getPurchases());
-                          UserSettings.shop = (await _databaseService.getShop());
-                          UserSettings.sessions = (await _databaseService.loadSessions());
-                          UserSettings.streak = (await _databaseService.getStreak())!;
-                          UserSettings.lastLogIn = (await _databaseService.getLastLogIn());
-                          _databaseService.updateLastLogin(DateTime.now().day.toString() +
+                          _databaseService.buildData();
+                          await _databaseService.updateLastLogin(DateTime.now().day.toString() +
                               '/' +
                               DateTime.now().month.toString() +
                               '/' +
                               DateTime.now().year.toString());
-                          _databaseService.streakBuild();
                           if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
@@ -260,25 +247,12 @@ class BodyState extends State<Body> {
                     await _authService.signInWithGoogle();
                     _databaseService.importData();
                     await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
-                    int lvl = await _databaseService
-                        .getLvl((await _databaseService.getXp())!);
-                    _databaseService.updateLevel(lvl);
-                    UserSettings.level = lvl;
-                    UserSettings.xpAmount = (await _databaseService.getXp())!;
-                    UserSettings.coinsAmount =
-                    (await _databaseService.getCoins())!;
-                    UserSettings.buddy = (await _databaseService.getBuddy())!;
-                    UserSettings.purchased = (await _databaseService.getPurchases());
-                    UserSettings.shop = (await _databaseService.getShop());
-                    UserSettings.sessions = (await _databaseService.loadSessions());
-                    UserSettings.streak = (await _databaseService.getStreak())!;
-                    UserSettings.lastLogIn = (await _databaseService.getLastLogIn());
-                    _databaseService.updateLastLogin(DateTime.now().day.toString() +
+                    _databaseService.buildData();
+                    await _databaseService.updateLastLogin(DateTime.now().day.toString() +
                         '/' +
                         DateTime.now().month.toString() +
                         '/' +
-                        DateTime.now().year.toString(),);
-                    _databaseService.streakBuild();
+                        DateTime.now().year.toString());
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
