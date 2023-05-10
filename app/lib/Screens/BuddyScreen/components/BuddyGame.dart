@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flutter/gestures.dart';
 import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/buddy.dart';
