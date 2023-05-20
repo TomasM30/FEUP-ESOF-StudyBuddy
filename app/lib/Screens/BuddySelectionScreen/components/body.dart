@@ -35,7 +35,7 @@ class BodyState extends State<Body> {
       children: [
         Background(
           child: Container(
-            margin: EdgeInsets.only(top: screenHeight * 0.4),
+            margin: EdgeInsets.only(top: screenHeight * 0.26),
             child: GridView.count(
             // crossAxisCount is the number of columns
               crossAxisCount: 2,
