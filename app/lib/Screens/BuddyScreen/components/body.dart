@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/components/BuddyGame.dart';
+import 'package:study_buddy_app/Screens/Logs/log_screen.dart';
 import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Shop/shop_screen.dart';
 import 'package:study_buddy_app/Screens/Timer/timer_screen.dart';
@@ -10,6 +11,8 @@ import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/custom_button.dart';
 import 'package:study_buddy_app/components/level_up_bar.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
+
+import '../../BuddySelectionScreen/species_screen.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key, required this.game}) : super(key: key);
@@ -154,7 +157,27 @@ class BodyState extends State<Body> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
+                      return LogScreen();
+                    },
+                  ),
+                );
+              },
+              press5: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
                       return SettingsScreen();
+                    },
+                  ),
+                );
+              },
+              press6: (){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return BuddySelectionScreen();
                     },
                   ),
                 );
@@ -163,7 +186,9 @@ class BodyState extends State<Body> {
               iconSrc1: 'assets/icons/settings.svg',
               iconSrc2: 'assets/icons/studymode.svg',
               iconSrc3: 'assets/icons/shop.svg',
-              iconSrc4: 'assets/icons/newSettings.svg',
+              iconSrc4: 'assets/icons/log.svg',
+              iconSrc5: 'assets/icons/newSettings.svg',
+              iconSrc6: 'assets/icons/EggIcon.svg',
             ),
           ),
         ),
