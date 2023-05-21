@@ -1,7 +1,7 @@
 # Domain Modelling
 
 <p align = "center">
-  <img src = https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/domain-model.png>
+  <img src = https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/domain_model.drawio.png>
 </p>
 
 Each user will have:
@@ -19,7 +19,7 @@ The user will also have access to a `Shop` where they can buy various `Items` us
 
 Associated with the timer, there will be a `Streak` of days in a row in which the user has recorded a time of 30min or over using said timer.
 
-And of course, the main feature of the app, the user will have a `Buddy` of a certain species, with it's own experience points that make him evolve and unlock different shop items. <br>
+And of course, the main feature of the app, the user will have a `Buddy` of a certain species, walking around the screen and featuring different animations depending on the species chosen. <br>
 **NOTE:** A user can only have one buddy active at a certain point in time.
 
-Finally, a `Log` will be kept of all previous buddies the user has owned, as well as their datetime of birth and death.
+Finally, a `Log` will be kept of all previous study sessions on a calendar, so that the user can look back at their progress.
