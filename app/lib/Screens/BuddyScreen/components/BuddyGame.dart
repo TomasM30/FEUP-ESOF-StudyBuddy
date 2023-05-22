@@ -23,6 +23,7 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   int direction = Random().nextInt(8);
   bool shouldStop = false;
 
+
   List<Buddy> buddies = [
     Buddy(
       image: "quatro.png",
@@ -30,6 +31,7 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       size: Vector2(212, 300),
       stepTime: 0.035,
       spriteSize: 11,
+      name: "Quatro",
     ),
     Buddy(
       image: "Teresa.png",
@@ -37,6 +39,7 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       size: Vector2(283, 400),
       stepTime: 0.028,
       spriteSize: 18,
+      name: "Teresa",
     ),
     Buddy(
       image: "Dos_Santos.png",
@@ -44,6 +47,7 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       size: Vector2(283, 400),
       stepTime: 0.08,
       spriteSize: 6,
+      name: "Dos Santos",
     ),
     Buddy(
       image: "JuanCarlos.png",
@@ -51,11 +55,16 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       size: Vector2(300, 425),
       stepTime: 0.15,
       spriteSize: 4,
+      name: "Juan Carlos",
     ),
   ];
 
   List<ShopItem> items = UserSettings.purchased;
 
+  List<Buddy> getBuddies() {
+    return buddies;
+  }
+  
   @override
   Future<void> onLoad() async {
     super.onLoad();
