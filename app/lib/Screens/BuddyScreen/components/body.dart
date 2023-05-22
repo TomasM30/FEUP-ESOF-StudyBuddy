@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/components/BuddyGame.dart';
+import 'package:study_buddy_app/Screens/BuddyScreen/components/background.dart';
 import 'package:study_buddy_app/Screens/Logs/log_screen.dart';
 import 'package:study_buddy_app/Screens/SettingsScreen/settings_screen.dart';
 import 'package:study_buddy_app/Screens/Shop/shop_screen.dart';
@@ -15,9 +14,10 @@ import 'package:study_buddy_app/components/toogle_button_menu_vertical.dart';
 import '../../BuddySelectionScreen/species_screen.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key, required this.game}) : super(key: key);
+  const Body({Key? key, this.game}) : super(key: key);
 
-  final BuddyGame game;
+  final BuddyGame? game;
+
 
   @override
   BodyState createState() => BodyState();
@@ -41,6 +41,8 @@ class BodyState extends State<Body> {
     return Stack(
       key: Key("buddyScreen"),
       children: [
+        if (widget.game == null)
+          Background(child: Text("")),
         Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -132,9 +134,10 @@ class BodyState extends State<Body> {
             padding: const EdgeInsets.only(top: 15, right: 8),
             child: MenuButtonV(
               press2: () async {
+                if(UserSettings.level != 0){
                 _databaseService.streakBuild();
-                Future.delayed(Duration(seconds: 2));
-                UserSettings.streak = (await _databaseService.getStreak())!;
+                Future.delayed(Duration(seconds: 1));
+                UserSettings.streak = (await _databaseService.getStreak())!;}
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

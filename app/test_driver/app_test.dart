@@ -8,7 +8,11 @@ import 'steps/test_steps.dart';
 Future<void> main() async {
   final config = FlutterTestConfiguration()
     ..defaultTimeout = new Duration(seconds: 50)
-    ..features = [Glob(r"test_driver/features/NoNotsMusic.feature")]
+    ..features = [Glob(r"test_driver/features/Register.feature"),
+      Glob(r"test_driver/features/Login.feature"),
+      Glob(r"test_driver/features/buddy.feature"),
+      Glob(r"test_driver/features/Timer.feature"),
+      Glob(r"test_driver/features/NoNotsMusic.feature"),]
     ..reporters = [
       ProgressReporter(),
     ]

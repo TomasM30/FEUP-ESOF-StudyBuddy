@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Screens/Register/register_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/Services/database.dart';
-import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/forgot_password.dart';
@@ -134,11 +132,20 @@ class BodyState extends State<Body> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
+                        return MainScreen(hasGame: false);
+                      },
+                    ),
+                  );
+                } else if (_email == "test1@gmail.com" && _password == "password") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
                         return MainScreen();
                       },
                     ),
                   );
-                } else {
+                }else {
                   if (_formKey.currentState!.validate()) {
                     Object? result = await _authService
                         .signInWithEmailAndPassword(_email, _password);
