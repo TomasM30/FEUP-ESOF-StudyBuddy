@@ -159,13 +159,14 @@ class BodyState extends State<Body> {
                           return;
                         } else {
                           _databaseService.importData();
-                          await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
+                          await Future.delayed(Duration(seconds: 1));
                           _databaseService.buildData();
                           await _databaseService.updateLastLogin(DateTime.now().day.toString() +
                               '/' +
                               DateTime.now().month.toString() +
                               '/' +
                               DateTime.now().year.toString());
+                          await Future.delayed(Duration(seconds: 3));
                           if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
@@ -253,6 +254,7 @@ class BodyState extends State<Body> {
                         DateTime.now().month.toString() +
                         '/' +
                         DateTime.now().year.toString());
+                    await Future.delayed(Duration(seconds: 1));
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

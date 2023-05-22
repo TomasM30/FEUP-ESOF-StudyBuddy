@@ -23,15 +23,6 @@ void main(){
       timer.startTimer();
       expect(timer.timer, isNotNull);
     });
-    /* testWidgets('After 2 seconds, timer should be 2 seconds', (WidgetTester tester) async{
-      final timer = BodyState();
-      await tester.pumpWidget(MaterialApp(home: Body()));
-      print("Mounted");
-      //await Future<void>.delayed(Duration(seconds: 2));
-      print("2 seconds passed");
-      expect(timer.duration, Duration(seconds: 0));
-      timer.stopTimer();
-    }); */
 
   });
 

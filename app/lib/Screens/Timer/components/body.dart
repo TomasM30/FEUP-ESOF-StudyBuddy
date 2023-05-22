@@ -132,7 +132,6 @@ class BodyState extends State<Body> {
                       UserSettings.sessions =
                           await _databaseService.loadSessions();
                       Future.delayed(Duration(seconds: 2));
-                      _databaseService.streakBuild();
                       _databaseService
                           .updateCoins((coinsAmount * multiplier).round());
                       _databaseService
@@ -232,8 +231,6 @@ class BodyState extends State<Body> {
         coinsAmount += 4;
       }
       UserSettings.duration = duration.inSeconds;
-      print(coinsAmount);
-      print(xpAmount);
       if (min){
         _databaseService.updateCoins((multiplier * coinsAmount).round());
         _databaseService.updateXp((multiplier * xpAmount).round());

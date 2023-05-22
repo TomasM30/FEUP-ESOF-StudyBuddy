@@ -129,6 +129,8 @@ class BodyState extends State<Body> {
             padding: const EdgeInsets.only(top: 15, right: 8),
             child: MenuButtonV(
               press2: () async {
+                _databaseService.streakBuild();
+                Future.delayed(Duration(seconds: 2));
                 UserSettings.streak = (await _databaseService.getStreak())!;
                 Navigator.pushReplacement(
                   context,

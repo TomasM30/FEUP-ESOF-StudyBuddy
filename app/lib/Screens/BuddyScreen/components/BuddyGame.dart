@@ -42,15 +42,15 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       image: "Dos_Santos.png",
       animation: "dosSantosAnimation.png",
       size: Vector2(283, 400),
-      stepTime: 0.035,
-      spriteSize: 0,
+      stepTime: 0.08,
+      spriteSize: 6,
     ),
     Buddy(
       image: "JuanCarlos.png",
       animation: "JuanCarlosAnimation.png",
       size: Vector2(300, 425),
-      stepTime: 0.035,
-      spriteSize: 0,
+      stepTime: 0.15,
+      spriteSize: 4,
     ),
   ];
 
@@ -64,7 +64,6 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       ..sprite = await loadSprite("study_mode_bg.png")
       ..size = size);
 
-    refreshWidget();
     for (int i = 0; i < items.length; i++) {
       SpriteComponent item = SpriteComponent()
         ..sprite = await loadSprite(items[i].image)
@@ -149,11 +148,6 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   @override
   Future<void> update(double dt) async {
     super.update(dt);
-
-    if(!firstTime){
-      databaseService.streakBuild();
-      firstTime = true;
-    }
 
     if (buddyAnimation.isRemoved) {
       buddy.opacity = 1;

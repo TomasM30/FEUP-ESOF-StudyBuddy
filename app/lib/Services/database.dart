@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:study_buddy_app/Services/auth.dart';
@@ -14,116 +15,116 @@ class DatabaseService {
   Future<void> importShop() async {
     try {
       final data = {
-          'Basil': {
-            'image': 'Manjerico.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Basil',
-            'sizeX': 100.01,
-            'sizeY': 100.01,
-            'posX': 0.05,
-            'posY': 0.12,
-          },
-          'Food Bowl': {
-            'image': 'Food_Bowl.png',
-            'coins': 30,
-            'xp': 15,
-            'name': 'Food Bowl',
-            'sizeX': 100.0001,
-            'sizeY': 62.0001,
-            'posX': 0.05,
-            'posY': 0.12,
-          },
-          'Aquarium': {
-            'image': 'Aquarium.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Aquarium',
-            'sizeX': 100.0001,
-            'sizeY': 79.0001,
-            'posX': 0.06,
-            'posY': 0.12,
-          },
-          'Basket': {
-            'image': 'basket.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Basket',
-            'sizeX': 100.0001,
-            'sizeY': 70.0001,
-            'posX': 0.07,
-            'posY': 0.12,
-          },
-          'Fireplace': {
-            'image': 'fireplace.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Fireplace',
-            'sizeX': 100.0001,
-            'sizeY': 130.0001,
-            'posX': 0.08,
-            'posY': 0.12,
-          },
-          'GameSquare': {
-            'image': 'GameSquare.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'GameSquare',
-            'sizeX': 100.0001,
-            'sizeY': 85.0001,
-            'posX': 0.09,
-            'posY': 0.12,
-          },
-          'Puff': {
-            'image': 'Puff.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Puff',
-            'sizeX': 100.0001,
-            'sizeY': 98.0001,
-            'posX': 0.1,
-            'posY': 0.12,
-          },
-          'Shovel': {
-            'image': 'Shovel.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Shovel',
-            'sizeX': 100.0001,
-            'sizeY': 252.0001,
-            'posX': 0.12,
-            'posY': 0.12,
-          },
-          'Stone': {
-            'image': 'stone.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Stone',
-            'sizeX': 100.0001,
-            'sizeY': 62.0001,
-            'posX': 0.05,
-            'posY': 0.12,
-          },
-          'TV': {
-            'image': 'tv.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'TV',
-            'sizeX': 100.0001,
-            'sizeY': 123.0001,
-            'posX': 0.13,
-            'posY': 0.12,
-          },
-          'Watering Can': {
-            'image': 'wateringCan.png',
-            'coins': 0,
-            'xp': 0,
-            'name': 'Watering Can',
-            'sizeX': 100.0001,
-            'sizeY': 67.0001,
-            'posX': 0.13,
-            'posY': 0.12,
-          },
+        'Basil': {
+          'image': 'Manjerico.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Basil',
+          'sizeX': 100.01,
+          'sizeY': 100.01,
+          'posX': 0.05,
+          'posY': 0.12,
+        },
+        'Food Bowl': {
+          'image': 'Food_Bowl.png',
+          'coins': 30,
+          'xp': 15,
+          'name': 'Food Bowl',
+          'sizeX': 100.0001,
+          'sizeY': 62.0001,
+          'posX': 0.05,
+          'posY': 0.12,
+        },
+        'Aquarium': {
+          'image': 'Aquarium.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Aquarium',
+          'sizeX': 100.0001,
+          'sizeY': 79.0001,
+          'posX': 0.06,
+          'posY': 0.12,
+        },
+        'Basket': {
+          'image': 'basket.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Basket',
+          'sizeX': 100.0001,
+          'sizeY': 70.0001,
+          'posX': 0.07,
+          'posY': 0.12,
+        },
+        'Fireplace': {
+          'image': 'fireplace.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Fireplace',
+          'sizeX': 100.0001,
+          'sizeY': 130.0001,
+          'posX': 0.08,
+          'posY': 0.12,
+        },
+        'GameSquare': {
+          'image': 'GameSquare.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'GameSquare',
+          'sizeX': 100.0001,
+          'sizeY': 85.0001,
+          'posX': 0.09,
+          'posY': 0.12,
+        },
+        'Puff': {
+          'image': 'Puff.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Puff',
+          'sizeX': 100.0001,
+          'sizeY': 98.0001,
+          'posX': 0.1,
+          'posY': 0.12,
+        },
+        'Shovel': {
+          'image': 'Shovel.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Shovel',
+          'sizeX': 100.0001,
+          'sizeY': 252.0001,
+          'posX': 0.12,
+          'posY': 0.12,
+        },
+        'Stone': {
+          'image': 'stone.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Stone',
+          'sizeX': 100.0001,
+          'sizeY': 62.0001,
+          'posX': 0.05,
+          'posY': 0.12,
+        },
+        'TV': {
+          'image': 'tv.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'TV',
+          'sizeX': 100.0001,
+          'sizeY': 123.0001,
+          'posX': 0.13,
+          'posY': 0.12,
+        },
+        'Watering Can': {
+          'image': 'wateringCan.png',
+          'coins': 0,
+          'xp': 0,
+          'name': 'Watering Can',
+          'sizeX': 100.0001,
+          'sizeY': 67.0001,
+          'posX': 0.13,
+          'posY': 0.12,
+        },
       };
       FirebaseDatabase.instance.ref().child('Shop').set(data);
     } on FirebaseException catch (e) {
@@ -579,8 +580,7 @@ class DatabaseService {
     updateLevel(lvl);
     UserSettings.level = lvl;
     UserSettings.xpAmount = (await getXp())!;
-    UserSettings.coinsAmount =
-    (await getCoins())!;
+    UserSettings.coinsAmount = (await getCoins())!;
     UserSettings.buddy = (await getBuddy())!;
     UserSettings.purchased = (await getPurchases());
     UserSettings.shop = (await getShop());
@@ -591,7 +591,6 @@ class DatabaseService {
   }
 
   Future<void> streakBuild() async {
-
     int length = UserSettings.sessions.length;
     List<Session> sessions = UserSettings.sessions;
     bool duration = false;
@@ -600,14 +599,21 @@ class DatabaseService {
         duration = true;
       }
     }
-    print(sessions.isNotEmpty);
-    print(UserSettings.lastLogIn);
-    print(DateTime.now().day.toString() + '/' + DateTime.now().month.toString() + '/' + DateTime.now().year.toString());
-    sessions.isNotEmpty ? print((int.parse(sessions[length-1].day) - DateTime.now().day).abs() == 1) : print('empty');
 
-    if (/*duration && */sessions.isNotEmpty &&
-        (UserSettings.lastLogIn != (DateTime.now().day.toString() + '/' + DateTime.now().month.toString() + '/' + DateTime.now().year.toString()))) {
-      if ((int.parse(sessions[length-1].day) - DateTime.now().day).abs() == 1) {
+    DateTime today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
+    DateTime lastDay = DateTime(
+        int.parse(sessions[length - 1].year),
+        int.parse(sessions[length - 1].month),
+        int.parse(sessions[length - 1].day));
+
+    if (duration && sessions.isNotEmpty && (!sameDay()) &&
+        (UserSettings.lastLogIn != (lastDay.toString()))) {
+      bool streakUpdate = (today.difference(lastDay) >= Duration(days: 1) &&
+          today.difference(lastDay) < Duration(days: 2));
+      print('streakupdate: $streakUpdate');
+      if (streakUpdate) {
         if (UserSettings.streak < 7) {
           UserSettings.streak++;
           updateStreak(UserSettings.streak);
@@ -635,7 +641,7 @@ class DatabaseService {
               break;
           }
         } else {
-          UserSettings.streak ++;
+          UserSettings.streak++;
           updateStreak(UserSettings.streak);
           UserSettings.multiplier = 2;
         }
@@ -645,5 +651,25 @@ class DatabaseService {
         updateStreak(UserSettings.streak);
       }
     }
+  }
+
+  bool sameDay(){
+    bool sameDay = false;
+    int sday = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].day);
+    int smonth = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].month);
+    int syear = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].year);
+    DateTime day = DateTime(syear, smonth,sday);
+    for(int i = 0; i < UserSettings.sessions.length-1; i++){
+      DateTime auxDay = DateTime(int.parse(UserSettings.sessions[i].day));
+      DateTime auxMonth = DateTime(int.parse(UserSettings.sessions[i].month));
+      DateTime auxYear = DateTime(int.parse(UserSettings.sessions[i].year));
+      DateTime aux = DateTime(auxDay.year, auxMonth.month, auxYear.day);
+      bool isSameDay = day.difference(aux) == Duration(days: 0);
+      if(isSameDay && int.parse(UserSettings.sessions[i].duration) >= 1800){
+        sameDay = true;
+        return sameDay;
+      }
+    }
+    return sameDay;
   }
 }

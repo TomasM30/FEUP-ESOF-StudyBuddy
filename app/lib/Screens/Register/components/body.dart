@@ -203,6 +203,7 @@ class BodyState extends State<Body> {
                         DateTime.now().month.toString() +
                         '/' +
                         DateTime.now().year.toString());
+                    await Future.delayed(Duration(seconds: 3));
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,
