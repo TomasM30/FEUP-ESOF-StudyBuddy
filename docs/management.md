@@ -96,3 +96,34 @@
 
  ## Release
   * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.3.0)
+  
+  
+# Final Iteration
+
+## Start of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i4s.png">
+
+## End of the Iteration
+<img src="https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/blob/main/images/i4e.png">
+
+<br>
+
+## The 4 questions
+
+### What went well?
+* We finished everything on time
+* We are happy with the final result of the app
+
+### What didn’t go so well?
+* We could have done more if we didn't have to deal with some constraints regarding our overall teamwork
+* We could have invested in some more unique features
+
+### What have we learned?
+* That it takes a very long time to develop a decent app
+* We learned, throughout this whole project, the general workflow patter of real software engineering
+
+### What still puzzles me?
+* Why acceptance tests bug out with the flame library
+
+## Release
+ * [Download Link](https://github.com/FEUP-LEIC-ES-2022-23/2LEIC05T3/releases/tag/0.4.0)
