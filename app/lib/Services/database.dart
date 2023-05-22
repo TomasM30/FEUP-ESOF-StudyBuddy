@@ -8,6 +8,7 @@ import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/sessions.dart';
 import 'package:study_buddy_app/components/shop_items.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class DatabaseService {
   final AuthService _authService = AuthService();
@@ -608,11 +609,9 @@ class DatabaseService {
         int.parse(sessions[length - 1].month),
         int.parse(sessions[length - 1].day));
 
-    if (duration && sessions.isNotEmpty && (!sameDay()) &&
+    if (duration && sessions.isNotEmpty &&
         (UserSettings.lastLogIn != (lastDay.toString()))) {
-      bool streakUpdate = (today.difference(lastDay) >= Duration(days: 1) &&
-          today.difference(lastDay) < Duration(days: 2));
-      print('streakupdate: $streakUpdate');
+      bool streakUpdate = (!isSameDay(today, lastDay) && today.difference(lastDay).inDays == 1);
       if (streakUpdate) {
         if (UserSettings.streak < 7) {
           UserSettings.streak++;
