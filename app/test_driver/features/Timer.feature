@@ -13,8 +13,8 @@ Feature: Timer Display
     Given I have "toggleButton" and "buddyScreen"
     Then I tap the "toggleButton" button
 
-    Given I have "studyModeButton" and "buddyScreen"
-    Then I tap the "studyModeButton" button
+    Given I have "studyModeBtn" and "buddyScreen"
+    Then I tap the "studyModeBtn" button
     Then I wait until the "studyModeScreen" is present
 
     Given I have "timerText" and "studyModeScreen"

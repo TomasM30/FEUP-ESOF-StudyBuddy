@@ -601,13 +601,17 @@ class DatabaseService {
       }
     }
 
+    late DateTime lastDay;
+
     DateTime today =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-    DateTime lastDay = DateTime(
-        int.parse(sessions[length - 1].year),
-        int.parse(sessions[length - 1].month),
-        int.parse(sessions[length - 1].day));
+    if(sessions.isNotEmpty){
+      lastDay = DateTime(
+          int.parse(sessions[length - 1].year),
+          int.parse(sessions[length - 1].month),
+          int.parse(sessions[length - 1].day));
+    }
 
     if (duration && sessions.isNotEmpty &&
         (UserSettings.lastLogIn != (lastDay.toString()))) {
@@ -650,25 +654,5 @@ class DatabaseService {
         updateStreak(UserSettings.streak);
       }
     }
-  }
-
-  bool sameDay(){
-    bool sameDay = false;
-    int sday = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].day);
-    int smonth = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].month);
-    int syear = int.parse(UserSettings.sessions[UserSettings.sessions.length - 1].year);
-    DateTime day = DateTime(syear, smonth,sday);
-    for(int i = 0; i < UserSettings.sessions.length-1; i++){
-      DateTime auxDay = DateTime(int.parse(UserSettings.sessions[i].day));
-      DateTime auxMonth = DateTime(int.parse(UserSettings.sessions[i].month));
-      DateTime auxYear = DateTime(int.parse(UserSettings.sessions[i].year));
-      DateTime aux = DateTime(auxDay.year, auxMonth.month, auxYear.day);
-      bool isSameDay = day.difference(aux) == Duration(days: 0);
-      if(isSameDay && int.parse(UserSettings.sessions[i].duration) >= 1800){
-        sameDay = true;
-        return sameDay;
-      }
-    }
-    return sameDay;
   }
 }

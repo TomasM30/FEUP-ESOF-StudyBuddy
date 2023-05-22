@@ -63,7 +63,7 @@ class MenuButtonVState extends State<MenuButtonV> {
           Column(
             children: [
               CustomButtons(
-                key: Key("studyModeButton"),
+                key: Key("studyModeBtn"),
                 width: widget.width,
                 iconSrc: widget.iconSrc2,
                 press: widget.press2,

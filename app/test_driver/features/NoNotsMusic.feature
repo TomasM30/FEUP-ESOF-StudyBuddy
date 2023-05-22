@@ -11,10 +11,10 @@ Feature: Toggle Music and Notifications
     Then I wait until the "buddyScreen" is present
 
     Given I have "toggleButton" and "buddyScreen"
-    Then I am in the game
+    Then I tap the "toggleButton" button
 
     Given I have "studyModeButton" and "buddyScreen"
-    Then I tap the "studyModeButton" button
+    Then I tap the "studyModeBtn" button
     Then I wait until the "studyModeScreen" is present
 
     Given I have "toggleButtonH" and "studyModeScreen"
