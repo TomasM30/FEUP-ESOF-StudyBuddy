@@ -4,7 +4,6 @@ import 'package:study_buddy_app/Screens/Welcome/welcome_screen.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/auth.dart';
 import 'package:study_buddy_app/Services/database.dart';
-import 'package:study_buddy_app/Services/user_setting.dart';
 import 'package:study_buddy_app/components/account_exists_field.dart';
 import 'package:study_buddy_app/components/custom_button_color.dart';
 import 'package:study_buddy_app/components/login_register_other.dart';
@@ -198,25 +197,13 @@ class BodyState extends State<Body> {
                     await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
                     _databaseService.importData();
                     await Future.delayed(Duration(seconds: 1)); // add a 1-second delay
-                    int lvl = await _databaseService
-                        .getLvl((await _databaseService.getXp())!);
-                    _databaseService.updateLevel(lvl);
-                    UserSettings.level = lvl;
-                    UserSettings.xpAmount = (await _databaseService.getXp())!;
-                    UserSettings.coinsAmount =
-                    (await _databaseService.getCoins())!;
-                    UserSettings.buddy = (await _databaseService.getBuddy())!;
-                    UserSettings.purchased = (await _databaseService.getPurchases());
-                    UserSettings.shop = (await _databaseService.getShop());
-                    UserSettings.sessions = (await _databaseService.loadSessions());
-                    UserSettings.streak = (await _databaseService.getStreak())!;
-                    UserSettings.lastLogIn = (await _databaseService.getLastLogIn());
-                    _databaseService.updateLastLogin(DateTime.now().day.toString() +
+                    _databaseService.buildData();
+                    await _databaseService.updateLastLogin(DateTime.now().day.toString() +
                         '/' +
                         DateTime.now().month.toString() +
                         '/' +
                         DateTime.now().year.toString());
-                    _databaseService.streakBuild();
+                    await Future.delayed(Duration(seconds: 3));
                     if (!mounted) return;
                     Navigator.pushReplacement(
                       context,

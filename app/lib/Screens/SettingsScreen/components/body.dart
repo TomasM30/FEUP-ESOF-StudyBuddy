@@ -149,8 +149,8 @@ class BodyState extends State<Body> {
                     text: 'Logout',
                     textColor: Colors.black,
                     bgcolor: Color(0xd0f3edd7),
-                    press: () {
-                      _authService.signOut();
+                    press: ()  {
+                       _authService.signOut();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

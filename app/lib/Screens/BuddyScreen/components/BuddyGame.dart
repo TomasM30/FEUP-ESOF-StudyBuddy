@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -10,6 +9,7 @@ import 'package:study_buddy_app/components/buddy.dart';
 import 'package:study_buddy_app/components/shop_items.dart';
 
 class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
+  bool firstTime = false;
   DatabaseService databaseService = DatabaseService();
   List<SpriteComponent> components = [];
   int buddySelected = UserSettings.buddy;
@@ -45,16 +45,16 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
       image: "Dos_Santos.png",
       animation: "dosSantosAnimation.png",
       size: Vector2(283, 400),
-      stepTime: 0.035,
-      spriteSize: 0,
+      stepTime: 0.08,
+      spriteSize: 6,
       name: "Dos Santos",
     ),
     Buddy(
       image: "JuanCarlos.png",
       animation: "JuanCarlosAnimation.png",
       size: Vector2(300, 425),
-      stepTime: 0.035,
-      spriteSize: 0,
+      stepTime: 0.15,
+      spriteSize: 4,
       name: "Juan Carlos",
     ),
   ];
@@ -68,10 +68,6 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    print(UserSettings.streak);
-    print(UserSettings.multiplier);
-    print(UserSettings.lastLogIn);
-
     databaseService.getPurchases();
     add(background
       ..sprite = await loadSprite("study_mode_bg.png")
@@ -161,14 +157,6 @@ class BuddyGame extends FlameGame with TapDetector, DoubleTapDetector {
   @override
   Future<void> update(double dt) async {
     super.update(dt);
-    /*if (UserSettings.sessions.isNotEmpty) {
-      if((int.parse(UserSettings.sessions[UserSettings.sessions.length-1].day) - DateTime.now().day).abs() > 7){
-        buddy.opacity = 0;
-      }
-    }*/
-
-
-
 
     if (buddyAnimation.isRemoved) {
       buddy.opacity = 1;

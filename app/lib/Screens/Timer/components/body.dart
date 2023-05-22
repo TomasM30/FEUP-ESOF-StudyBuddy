@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:study_buddy_app/Services/database.dart';
 import 'package:study_buddy_app/Screens/BuddyScreen/main_screen.dart';
 import 'package:study_buddy_app/Services/user_setting.dart';
-import 'package:study_buddy_app/components/sessions.dart';
 import 'package:study_buddy_app/components/toogle_button_menu_horizontal.dart';
 
 import 'background.dart';
@@ -22,11 +20,10 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
+  bool min = false;
   bool clicked = false;
   int xpAmount = UserSettings.xpAmount;
   int coinsAmount = UserSettings.coinsAmount;
-  int auxXp = UserSettings.xpAmount;
-  int auxCoins = UserSettings.coinsAmount;
   final DatabaseService _databaseService = DatabaseService();
   Duration duration = Duration();
   Timer? timer;
@@ -135,7 +132,6 @@ class BodyState extends State<Body> {
                       UserSettings.sessions =
                           await _databaseService.loadSessions();
                       Future.delayed(Duration(seconds: 2));
-                      _databaseService.streakBuild();
                       _databaseService
                           .updateCoins((coinsAmount * multiplier).round());
                       _databaseService
@@ -227,6 +223,7 @@ class BodyState extends State<Body> {
               duration.inMinutes == 0 &&
               duration.inSeconds % 60 == 0 &&
               duration.inSeconds != 0)) {
+        min = true;
         xpAmount++;
         coinsAmount += 4;
       } else if (!isFirstHour) {
@@ -234,15 +231,14 @@ class BodyState extends State<Body> {
         coinsAmount += 4;
       }
       UserSettings.duration = duration.inSeconds;
-      if (auxCoins != coinsAmount) {
+      if (min){
         _databaseService.updateCoins((multiplier * coinsAmount).round());
-        auxCoins = coinsAmount;
-      }
-      if (auxXp != xpAmount) {
         _databaseService.updateXp((multiplier * xpAmount).round());
-        auxXp = xpAmount;
+      } else {
+        _databaseService.updateCoins((coinsAmount).round());
+        _databaseService.updateXp((xpAmount).round());
       }
-      _databaseService.updateXp(xpAmount);
+
       duration = Duration(seconds: seconds);
     });
   }

@@ -15,4 +15,20 @@ class UserSettings {
   static List<ShopItem> purchased = [];
   static List<ShopItem> shop = [];
   static List<Session> sessions = [];
+
+  void clearUserSettings() {
+    lastLogIn = "";
+    multiplier = 1;
+    streak = 1;
+    xpAmount = 0;
+    coinsAmount = 0;
+    duration = 0;
+    level = 0;
+    buddy = 0;
+    music = false;
+    doNotDisturb = false;
+    purchased = [];
+    shop = [];
+    sessions = [];
+  }
 }
